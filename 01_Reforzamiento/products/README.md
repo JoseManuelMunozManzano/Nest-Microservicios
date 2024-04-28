@@ -12,6 +12,8 @@ Luego nos llevamos el proyecto `products` a nuestra carpeta `01-Reforzamiento`.
 $ npm install
 ```
 
+Renombrar el archivo .env.template a .env
+
 ## Ejecutar la app
 
 ```bash
@@ -43,6 +45,18 @@ Instalamos el siguiente paquete (y sus types para Typescript) para poder generar
 npm i uuid
 npm i --save-dev @types/uuid
 ```
+
+## Variables de entorno
+
+Solo vamos a configurar una variable de entorno, el puerto.
+
+Las variables de entorno son fundamentales en los microservicios. Es la manera en la que podemos configurar esos microservicios.
+
+Para trabajar con microservicios, es más cómodo trabajar con las variables de entorno usando el paquete `dotenv` en vez de usar ConfigModule, que es lo que indica el pdf de los atajos de Nest.
+
+Instalamos dicho paquete: `npm i dotenv`.
+
+En la carpeta `src` creamos la carpeta `config` y dentro el archivo `envs.ts`, y en el root de nuestro proyecto creamos los archivos `.env` y `.env.template`, siendo este último el que se guarda en Git.
 
 ## Postman
 

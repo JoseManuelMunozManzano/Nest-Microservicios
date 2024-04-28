@@ -12,12 +12,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/products",
+					"raw": "http://localhost:3001/api/products",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "3001",
 					"path": [
 						"api",
 						"products"
@@ -32,12 +32,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/products/a2d80041-9f06-445b-ae62-73a922e0a2e",
+					"raw": "http://localhost:3001/api/products/a2d80041-9f06-445b-ae62-73a922e0a2e",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "3001",
 					"path": [
 						"api",
 						"products",
@@ -73,12 +73,12 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/products",
+					"raw": "http://localhost:3001/api/products",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "3001",
 					"path": [
 						"api",
 						"products"
@@ -93,12 +93,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/products/d2f93759-f846-433b-af61-995ce1b61d29",
+					"raw": "http://localhost:3001/api/products/d2f93759-f846-433b-af61-995ce1b61d29",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "3001",
 					"path": [
 						"api",
 						"products",
@@ -123,12 +123,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/products/5a6b31a2-a852-40a4-bf8f-8963f3395bba",
+					"raw": "http://localhost:3001/api/products/5a6b31a2-a852-40a4-bf8f-8963f3395bba",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "3001",
 					"path": [
 						"api",
 						"products",
