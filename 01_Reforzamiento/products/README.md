@@ -58,6 +58,16 @@ Instalamos dicho paquete: `npm i dotenv`.
 
 En la carpeta `src` creamos la carpeta `config` y dentro el archivo `envs.ts`, y en el root de nuestro proyecto creamos los archivos `.env` y `.env.template`, siendo este último el que se guarda en Git.
 
+## Esquema de validación
+
+Sirve para validar nuestras variables de entorno. Si no existen o su valor no es del tipo que queremos debe lanzar un error y no levantarse nuestra aplicación REST o nuestro microservicio.
+
+En este curso vamos a estar trabajando con el paquete Joi.
+
+Instalamos dicho paquete: `npm i joi`.
+
+La ventaja de este montaje es que ahora, a lo largo de toda la app, podemos usar envs de manera síncrona. Evitamos usar async solo para esperar tener nuestros valores de variable de entorno.
+
 ## Postman
 
 En la carpeta Postman se encuentran los endpoints probados.

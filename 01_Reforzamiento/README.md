@@ -25,3 +25,4 @@ Este reforzamiento tiene por objetivo asegurarnos que estamos en la misma págin
 ## Proyectos
 
 - products
+  - Lo más importante de este proyecto es la configuración de las variables de entorno y el uso del esquema de validación
