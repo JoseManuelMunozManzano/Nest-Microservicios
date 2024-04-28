@@ -30,3 +30,9 @@ $ npm run start:prod
 Ejecutar en la terminal el comando: `nest g res products`
 
 A las preguntas, respondemos `REST API` y `Y`
+
+Instalamos los siguientes paquetes para poder realizar validaciones:
+
+```
+npm i class-validator class-transformer
+```
