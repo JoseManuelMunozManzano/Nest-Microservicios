@@ -36,3 +36,10 @@ Instalamos los siguientes paquetes para poder realizar validaciones:
 ```
 npm i class-validator class-transformer
 ```
+
+Instalamos el siguiente paquete (y sus types para Typescript) para poder generar id:
+
+```
+npm i uuid
+npm i --save-dev @types/uuid
+```
