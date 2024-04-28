@@ -43,3 +43,9 @@ Instalamos el siguiente paquete (y sus types para Typescript) para poder generar
 npm i uuid
 npm i --save-dev @types/uuid
 ```
+
+## Postman
+
+En la carpeta Postman se encuentran los endpoints probados.
+
+Indicar que como este ejemplo se hace en memoria, lo primero va a ser siempre hacer el POST para crear algunos productos.
