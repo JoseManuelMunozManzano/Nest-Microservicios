@@ -1,20 +1,18 @@
 # products
 
+## Creación de proyecto
+
 Vamos a la carpeta del curso y usamos el comando: `nest new products`.
 
 Luego nos llevamos el proyecto `products` a nuestra carpeta `01-Reforzamiento`.
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+## Instalación
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+## Ejecutar la app
 
 ```bash
 # development
@@ -27,15 +25,8 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Rest - Products CRUD
 
-```bash
-# unit tests
-$ npm run test
+Ejecutar en la terminal el comando: `nest g res products`
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
+A las preguntas, respondemos `REST API` y `Y`
