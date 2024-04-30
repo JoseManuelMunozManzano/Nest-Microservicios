@@ -67,6 +67,19 @@ app.useGlobalPipes(
   new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
+
+    // Esto es un extra
+    // En el formato de respuesta de los errores en NestJS estos vendrán agrupados por la key del body.
+    exceptionFactory: (errors) => {
+      const result = errors.map((error) => ({
+        [error.property]: {
+          errors: Object.values(error.constraints),
+        },
+      }));
+
+      return new BadRequestException(result);
+    },
+
   })
 );
 ```
