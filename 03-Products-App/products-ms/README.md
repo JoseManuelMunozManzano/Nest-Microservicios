@@ -103,3 +103,60 @@ npm i dotenv joi
 ```
 
 Siendo `joi` el validador del esquema
+
+## Prisma - SQLite
+
+Documentación: https://docs.nestjs.com/recipes/prisma
+
+Otra documentación para aplicar patrón repository:
+
+- https://www.linkedin.com/pulse/implementing-repository-pattern-nestjs-nadeera-sampath/
+- https://www.tomray.dev/nestjs-prisma
+
+Prisma es similar a TypeORM y a Sequelize.
+
+Tenemos que instalar los siguientes paquetes:
+
+```
+npm i -D prisma
+```
+
+Lo que hace Prisma es crearnos un cliente, y nosotros trabajamos con ese cliente. El cliente está personalizado a nuestra base de datos.
+
+Una vez instalado, ejecutamos para ejecutar la inicialización:
+
+```
+npx prisma init
+```
+
+Esta ejecución modifica nuestro fuente `.env`, donde añade una cadena de conexión para PostgreSQL. Como nosotros vamos a trabajar con SQLite tenemos que cambiarlo a:
+
+```
+DATABASE_URL="file:./dev.db"
+```
+
+SQLite es una BBDD que crea un archivo físico.
+
+La inicialización también creó un directorio `prisma` y un archivo `schema.prisma`.
+
+En dicho archivo, cambiamos el provider del datasource a `sqlite`.
+
+Y nos creamos, también en dicho archivo, el modelo de nuestra tabla `Product`.
+
+Ahora ejecutamos la migración. Lo que hace es preparar nuestra BBDD para que luzca exactamente como tenemos definido el esquema.
+
+```
+npx prisma migrate dev --name init
+```
+
+Esto crea en la carpeta `prisma` la carpeta `migrations`, también la BD `dev.db` y un journal `dev.db-journal`.
+
+Por último, hacemos la instalación del Prisma client.
+
+```
+npm i @prisma/client
+```
+
+Este Prisma client es creado basado en nuestro esquema y también se va a relacionar con nuestros servicios. De ahí que ahora tocamos el fuente `src/products/products.service.ts`.
+
+En la otra documentación se habla de como trabajar con el patrón repository en vez de con el service.
