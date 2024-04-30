@@ -51,3 +51,22 @@ Se añade el siguiente código en el objeto `rules` del fuente `.eslintrc.js`
       },
     ],
 ```
+
+## Validaciones
+
+Instalamos Los siguientes paquetes para poder hacer uso de las validaciones:
+
+```
+npm i class-validator class-transformer
+```
+
+No olvidar añadir la configuración global de pipes para que las validaciones surtan efecto, esto en el fuente `main.ts`.
+
+```
+app.useGlobalPipes(
+  new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+  })
+);
+```
