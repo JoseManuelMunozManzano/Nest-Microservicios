@@ -160,3 +160,7 @@ npm i @prisma/client
 Este Prisma client es creado basado en nuestro esquema y también se va a relacionar con nuestros servicios. De ahí que ahora tocamos el fuente `src/products/products.service.ts`.
 
 En la otra documentación se habla de como trabajar con el patrón repository en vez de con el service.
+
+## Testing
+
+En la carpeta `scripts` hay un archivo `products.sql` con 50 productos para insertar en la BD. Yo estoy usando la extensión `SQLite` de VSCode para trabajar con BBDD SQLite.

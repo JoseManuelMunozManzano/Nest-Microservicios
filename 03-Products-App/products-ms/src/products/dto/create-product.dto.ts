@@ -10,5 +10,5 @@ export class CreateProductDto {
   })
   @Min(0)
   @Type(() => Number) // Transforma el price, si viene como string, a número
-  public price: string;
+  public price: number; // Cambiado a number porque hay Type Safety entre Prisma y TypeScript
 }

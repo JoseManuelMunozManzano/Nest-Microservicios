@@ -4,7 +4,6 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaClient } from '@prisma/client';
 
 // El extends y el implements está explicado en: https://docs.nestjs.com/recipes/prisma
-
 @Injectable()
 export class ProductsService extends PrismaClient implements OnModuleInit {
   private readonly logger = new Logger('ProductsService');
@@ -15,7 +14,10 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
   }
 
   create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+    // Crear producto usando Prisma
+    return this.product.create({
+      data: createProductDto,
+    });
   }
 
   findAll() {
