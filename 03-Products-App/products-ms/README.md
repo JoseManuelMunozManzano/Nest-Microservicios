@@ -187,6 +187,22 @@ Especialmente en microservicios NO se recomienda hacer borrados físicos porque 
 
 En este ejemplo se van a hacer deletes de la dos formas, físicos y suaves.
 
+Para la eliminación suave creamos en el esquema de Prima `Product` una nueva columna (bandera) que indica si el registro está o no disponible.
+
+Tenemos que volver a hacer la migración:
+
+```
+npx prisma migrate dev --name available
+```
+
+Esta bandera la vamos a indexar nuestras querys se ejecuten más rápido. Esta creación de indexación se hace también en `schema.prisma`, y una vez hecho, tenemos que volver a realizar la migración:
+
+```
+npx prisma migrate dev --name available-index
+```
+
+También tenemos que modificar el service para que tenga en cuenta el nuevo campo available y obtener solo los disponibles.
+
 ## Testing
 
 En la carpeta `scripts` hay un archivo `products.sql` con 50 productos para insertar en la BD. Yo estoy usando la extensión `SQLite` de VSCode para trabajar con BBDD SQLite.

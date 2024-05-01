@@ -26,10 +26,11 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     });
   }
 
+  // Tenemos en cuenta que el producto esté disponible.
   async findAll(paginationDto: PaginationDto) {
     const { page, limit } = paginationDto;
 
-    const totalPages = await this.product.count();
+    const totalPages = await this.product.count({ where: { available: true } });
     const lastPage = Math.ceil(totalPages / limit);
 
     return {
@@ -37,6 +38,9 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
         // skip empieza desde el 0 y hay que multiplicarlo por el límite.
         skip: (page - 1) * limit,
         take: limit,
+        where: {
+          available: true,
+        },
       }),
       meta: {
         total: totalPages,
@@ -46,9 +50,10 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     };
   }
 
+  // Tenemos en cuenta que el producto esté disponible.
   async findOne(id: number) {
     const product = await this.product.findFirst({
-      where: { id },
+      where: { id, available: true },
     });
 
     if (!product) {
@@ -71,7 +76,6 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     });
   }
 
-  // BORRADOS FÍSICOS NO RECOMENDADOS EN MICROSERVICIOS!!!!
   // Como se ha indicado en el update, podemos regresar promesas a los controladores y Nest
   // espera a la respuesta del observable o la promesa para que el usuario reciba la respuesta
   // síncrona.
@@ -80,8 +84,17 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
   async remove(id: number) {
     await this.findOne(id);
 
-    return this.product.delete({
+    return await this.product.update({
       where: { id },
+      data: {
+        available: false,
+      },
     });
+
+    // Borrado físico: No recomendado
+    //
+    // return this.product.delete({
+    //   where: { id },
+    // });
   }
 }
