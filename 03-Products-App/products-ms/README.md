@@ -177,6 +177,10 @@ Dentro creamos la carpeta `dto` y dentro el archivo `pagination.dto.ts`.
 
 Dentro de `common` creamos también un archivo `index.ts`.
 
+## Actualizar productos
+
+Gracias a que usamos el Nest CLI con resource, ya tenemos creado el archivo dto para la actualización, `update-product.dto.ts`.
+
 ## Testing
 
 En la carpeta `scripts` hay un archivo `products.sql` con 50 productos para insertar en la BD. Yo estoy usando la extensión `SQLite` de VSCode para trabajar con BBDD SQLite.

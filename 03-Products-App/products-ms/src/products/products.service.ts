@@ -58,8 +58,17 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     return product;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  // La razón por la que no se usa el await en el update es porque no necesitamos esperar a que
+  // se resuelva la promesa antes de devolverla, en este caso estamos devolviendo la promesa
+  // directamente y Nest se encarga de esperar a que se resuelva antes de enviar la respuesta al
+  // cliente, es por esto que no es necesario hacer el await si devolvemos la promesa directamente.
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    await this.findOne(id);
+
+    return this.product.update({
+      where: { id },
+      data: updateProductDto,
+    });
   }
 
   remove(id: number) {
