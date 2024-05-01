@@ -203,6 +203,33 @@ npx prisma migrate dev --name available-index
 
 También tenemos que modificar el service para que tenga en cuenta el nuevo campo available y obtener solo los disponibles.
 
+## Transformar a microservicio
+
+Técnicamente hablando, lo que tenemos hasta ahora puede ser considerado como un microservicio que se comunica por peticiones REST o HTTP, pero esto sería el último modelo del modelo OSI y no queremos eso.
+
+Lo que queremos es transportar nuestra información mediante TCP.
+
+Documentación: https://docs.nestjs.com/microservices/basics
+
+Realizamos la instalación del siguiente paquete:
+
+```
+npm i --save @nestjs/microservices
+```
+
+También vemos en la documentación que en el fichero `main.ts`, en vez de hacer la creación tradicional, se usa `createMicroservice` donde se especifica el tipo de transporte que queremos.
+
+También se podría mantener un híbrido, dejando en `main.ts` nuestra creación `create` y añadir en otra línea la sentencia `app.startAllMicroservices()`, pero no queremos que sea un híbrido.
+
+Vamos a trabajar de dos maneras (dos patrones) a lo largo de este curso:
+
+- Emisión de eventos: el @EventPattern manda el evento al interesado pero no espera nada. Útil por ejemplo para grabar logs
+- Mensajería: por defecto, la mensajería mediante @MessagePattern es similar a la comunicación con RESTFul tradicional. Se envía una petición y esperamos a la respuesta para poder seguir trabajando
+
+Vamos a trabajar con los dos tipos de patrones, pero vamos a empezar con la mensajería.
+
 ## Testing
 
 En la carpeta `scripts` hay un archivo `products.sql` con 50 productos para insertar en la BD. Yo estoy usando la extensión `SQLite` de VSCode para trabajar con BBDD SQLite.
+
+Postman: En la carpeta del root `postman` dejo los ejemplos de rutas a ejecutar para hacer POST, GET, PATCH y DELETE. Al hacer la transformación a microservicio NO funcionan.
