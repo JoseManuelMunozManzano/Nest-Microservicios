@@ -161,6 +161,22 @@ Este Prisma client es creado basado en nuestro esquema y también se va a relaci
 
 En la otra documentación se habla de como trabajar con el patrón repository en vez de con el service.
 
+## Obtener productos y paginarlos
+
+Vamos a permitir que el usuario pase como query parameters, opcionales, la página que queremos `page` y el número de elementos por página `limit`.
+
+Tenemos que validar que se envían números y dentro de un rango.
+
+Ejemplo de url: `http://localhost:3001/products?page=1&limit=10`
+
+Creamos un `dto` de paginación.
+
+En la carpeta `src` creamos un directorio `common` donde vamos a poner objetos que no estén relacionados con nuestro módulo principal products.
+
+Dentro creamos la carpeta `dto` y dentro el archivo `pagination.dto.ts`.
+
+Dentro de `common` creamos también un archivo `index.ts`.
+
 ## Testing
 
 En la carpeta `scripts` hay un archivo `products.sql` con 50 productos para insertar en la BD. Yo estoy usando la extensión `SQLite` de VSCode para trabajar con BBDD SQLite.
