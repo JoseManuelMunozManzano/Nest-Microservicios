@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Injectable,
   Logger,
@@ -68,11 +69,14 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
   // directamente y Nest se encarga de esperar a que se resuelva antes de enviar la respuesta al
   // cliente, es por esto que no es necesario hacer el await si devolvemos la promesa directamente.
   async update(id: number, updateProductDto: UpdateProductDto) {
+    // Como mando el id y en updateProductDto también viene el id, lo quito de este último.
+    const { id: _, ...data } = updateProductDto;
+
     await this.findOne(id);
 
     return this.product.update({
       where: { id },
-      data: updateProductDto,
+      data: data,
     });
   }
 

@@ -7,3 +7,7 @@ Lo primero es actualizar el `Nest CLI` a la última versión: `npm install -g @n
 El orden de creación de los microservicios es el siguiente:
 
 - products-ms
+
+Nuestro objetivo es hacer esto:
+
+![alt Objetivo](./images/Objetivo.png)

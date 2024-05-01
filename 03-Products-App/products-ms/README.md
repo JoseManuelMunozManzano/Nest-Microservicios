@@ -219,7 +219,7 @@ npm i --save @nestjs/microservices
 
 También vemos en la documentación que en el fichero `main.ts`, en vez de hacer la creación tradicional, se usa `createMicroservice` donde se especifica el tipo de transporte que queremos.
 
-También se podría mantener un híbrido, dejando en `main.ts` nuestra creación `create` y añadir en otra línea la sentencia `app.startAllMicroservices()`, pero no queremos que sea un híbrido.
+También se podría mantener un híbrido, dejando en `main.ts` nuestra creación `create` y añadir en otra línea la sentencia `app.startAllMicroservices()`, pero no queremos que sea un híbrido. También vamos a hacer un híbrido cuando trabajemos con la autenticación, ya que esta puede ser una API propia y a la vez un microservicio.
 
 Vamos a trabajar de dos maneras (dos patrones) a lo largo de este curso:
 
@@ -228,8 +228,26 @@ Vamos a trabajar de dos maneras (dos patrones) a lo largo de este curso:
 
 Vamos a trabajar con los dos tipos de patrones, pero vamos a empezar con la mensajería.
 
+## Message Pattern
+
+Si tenemos este @MessagePattern en un microservicio A
+
+```
+@MessagePattern({ cmd: 'sum' })
+```
+
+Un microservicio B que quiera comunicarse con el microservicio A va a tener que poner exactamente lo definido en ese @MessagePattern, es decir `{cmd: 'sum'}`, siendo este el nombre del mensaje. El nombre del mensaje no necesariamente tiene que ser un objeto, también puede ser un string.
+
+Hay una buena práctica que podemos usar para dar nombre a los mensajes. Consiste en usar enum. Mejora la legibilidad del código y reduce la probabilidad de errores tipográficos, facilitando además el mantenimiento y la actualización de los valores.
+
+En la carpeta `common` creamos la carpeta `constants` y dentro el fuente `message_pattern.constants.ts`.
+
 ## Testing
 
 En la carpeta `scripts` hay un archivo `products.sql` con 50 productos para insertar en la BD. Yo estoy usando la extensión `SQLite` de VSCode para trabajar con BBDD SQLite.
 
-Postman: En la carpeta del root `postman` dejo los ejemplos de rutas a ejecutar para hacer POST, GET, PATCH y DELETE. Al hacer la transformación a microservicio NO funcionan.
+Postman: En la carpeta del root `postman` dejo los ejemplos de rutas a ejecutar para hacer POST, GET, PATCH y DELETE. Al hacer la transformación a microservicio NO funcionan. Queda para commits anteriores.
+
+Una vez hemos transformado este proyecto a microservicio, la forma de probar esto es a través de un Gateway, que es un punto intermedio en el cual vamos a crearnos un RESTFul API endpoint al que se van a conectar nuestros clientes. Este Gateway se va a comunicar con los microservicios usando TCP.
+
+![alt Objetivo](../images/Objetivo.png)
