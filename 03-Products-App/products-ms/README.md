@@ -244,6 +244,12 @@ En la carpeta `common` creamos la carpeta `constants` y dentro el fuente `messag
 
 ## Testing
 
+- Clonar el repositorio
+- Instalar dependencias
+- Crear un archivo `.env` basado en `env.template`
+- Ejecutar migración de Prisma `npx prisma migrate dev`
+- Ejecutar `npm run start:dev`
+
 En la carpeta `scripts` hay un archivo `products.sql` con 50 productos para insertar en la BD. Yo estoy usando la extensión `SQLite` de VSCode para trabajar con BBDD SQLite.
 
 Postman: En la carpeta del root `postman` dejo los ejemplos de rutas a ejecutar para hacer POST, GET, PATCH y DELETE. Al hacer la transformación a microservicio NO funcionan. Queda para commits anteriores.
