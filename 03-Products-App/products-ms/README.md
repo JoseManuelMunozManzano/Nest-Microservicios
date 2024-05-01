@@ -181,6 +181,12 @@ Dentro de `common` creamos también un archivo `index.ts`.
 
 Gracias a que usamos el Nest CLI con resource, ya tenemos creado el archivo dto para la actualización, `update-product.dto.ts`.
 
+## Eliminar productos de forma física y suave
+
+Especialmente en microservicios NO se recomienda hacer borrados físicos porque pueden crear problemas de integridad referencial. Lo suyo es hacer eliminaciones suaves, con banderas que indican que el registro está eliminado.
+
+En este ejemplo se van a hacer deletes de la dos formas, físicos y suaves.
+
 ## Testing
 
 En la carpeta `scripts` hay un archivo `products.sql` con 50 productos para insertar en la BD. Yo estoy usando la extensión `SQLite` de VSCode para trabajar con BBDD SQLite.

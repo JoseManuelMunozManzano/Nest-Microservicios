@@ -71,7 +71,17 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  // BORRADOS FÍSICOS NO RECOMENDADOS EN MICROSERVICIOS!!!!
+  // Como se ha indicado en el update, podemos regresar promesas a los controladores y Nest
+  // espera a la respuesta del observable o la promesa para que el usuario reciba la respuesta
+  // síncrona.
+  // De todas formas, indicamos el async porque usamos un await para buscar si el id existe
+  // antes de eliminarlo.
+  async remove(id: number) {
+    await this.findOne(id);
+
+    return this.product.delete({
+      where: { id },
+    });
   }
 }
