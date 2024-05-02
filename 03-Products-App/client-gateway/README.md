@@ -41,8 +41,63 @@ npm i joi dotenv
 
 En el root creamos el archivo de variables de entorno `.env` y su template que es a lo que hacemos seguimiento `.env.template`.
 
+## Rutas
+
+Creamos la configuración de las rutas para que los endpoints que creamos en el proyecto `products-ms` funcionen.
+
+```
+nest g res products
+```
+
+En este caso, recordar que nuestro gateway si es un REST API endpoint, y a la pregunta de si queremos crear un CRUD entry points indicamos `n` porque no nos hace falta todo lo que el CRUD crea por defecto.
+
+De todo lo que crea nos creamos con el controlador y el module, pero vacíos.
+
+## Levantar Products Microservice y conectarlo al Gateway
+
+Vamos a usar la extensión de VSCode `Peacock` para ayudar a no perderse entre tantos proyectos abiertos. Cambia el color del espacio de trabajo. Ideal cuando se tiene varias instancias de VSCode e identificar rápidamente cuál es cuál.
+
+Levantamos nuestro microservicio products-ms: `npm run start:dev`
+
+Para conectarnos a nuestro product-ms podemos ver la siguiente documentación: https://docs.nestjs.com/microservices/basics#client
+
+Tenemos que instalar el paquete de microservices: `npm i @nestjs/microservices`
+
+Ahora tenemos que registrar un `inyection token` para poder registrar un microservicio en el cliente, e indicamos el tipo de transporte que vamos a realizar. Este código lo vamos a colocar dentro de `products.module.ts`.
+
+```
+  imports: [
+    // Es un arreglo porque podemos indicar cualquier número de microservicios
+    // con los que queramos comunicarnos.
+    //
+    // El PRODUCT_SERVICE es lo que vamos a usar para inyectar el microservicio en los
+    // controladores u otros lugares como services...
+    //
+    // El valor indicado en transport tiene que ser el mismo canal de comunicación que
+    // indicamos en el archivo main.ts de nuestro proyecto product-ms
+    //
+    // También tenemos que indicar el host y el puerto del host.
+    // Esto lo hacemos en variables de entorno.
+    ClientsModule.register([
+      {
+        name: PRODUCT_SERVICE,
+        transport: Transport.TCP,
+        options: {
+          host: envs.productsMicroserviceHost,
+          port: envs.productsMicroservicePort,
+        },
+      },
+    ]),
+  ],
+```
+
+Como es fácil equivocarse al escribir `PRODUCT_SERVICE` lo que vamos a hacer en la carpeta `config` es crearnos un archivo `services.ts` e indicar ahí una constante con un valor de inyection token. Usaremos esa constante en vez del string.
+
 ## Testing
 
 - Clonar el repositorio
 - Instalar dependencias
 - Ejecutar `npm run start:dev`
+- Levantar de manera independiente el proyecto products-ms usando también Peacock para diferenciar el espacio de trabajo: `npm run start:dev`
+
+Postman: En la carpeta del root `postman` dejo los ejemplos de rutas a ejecutar para hacer POST, GET, PATCH y DELETE a products.
