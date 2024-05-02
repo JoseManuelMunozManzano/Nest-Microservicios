@@ -139,8 +139,17 @@ Al final, nuestro método queda:
       { cmd: ProductTCP.FIND_ALL },
       paginationDto,
     );
-  }
 ```
+
+## Manejo de excepciones
+
+¿Cómo recupero en mi client-gateway la excepción lanzada desde mi microservicio products-ms, para manejarla?
+
+En nuestro `products-ms` se ha cambiado, en `products.service.ts` la excepción `NotFoundException` por una `RpcException`. Con esto, cuando se lance esta excepción, tendremos en la consola de nuestro client-gateway el log del error con una mejor información.
+
+Trabajando con Rxjs y Observables, y try...catch también tenemos acceso al mensaje erroneo (si falla) y podemos capturarlo y hacer con el lo que queramos.
+
+Aunque lo que hemos hecho en nuestro `products.controller.ts` no es malo, vamos a atrapar los errores en un único lugar para que la respuesta de error siempre sea manejada como si fueran objetos.
 
 ## Testing
 

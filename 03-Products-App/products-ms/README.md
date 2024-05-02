@@ -242,6 +242,10 @@ Hay una buena práctica que podemos usar para dar nombre a los mensajes. Consist
 
 En la carpeta `common` creamos la carpeta `constants` y dentro el fuente `message_pattern.constants.ts`.
 
+## Manejo de excepciones
+
+En nuestro fuente `products.service.ts`, en vez de lanzar la excepcion `NotFoundException` se puede lanzar una excepción `RpcException` con la idea de que nuestro client-gateway la pueda recuperar. Con esto, cuando se lance esta excepción, tendremos en la consola de nuestro client-gateway el log del error con una mejor información.
+
 ## Testing
 
 - Clonar el repositorio
