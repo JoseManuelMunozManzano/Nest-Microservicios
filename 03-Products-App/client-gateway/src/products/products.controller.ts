@@ -3,14 +3,20 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Patch,
   Post,
 } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { ProductTCP } from 'src/common';
+import { PRODUCT_SERVICE } from 'src/config';
 
 @Controller('products')
 export class ProductsController {
-  constructor() {}
+  constructor(
+    @Inject(PRODUCT_SERVICE) private readonly productsClient: ClientProxy,
+  ) {}
 
   @Post()
   createProduct() {
@@ -19,7 +25,9 @@ export class ProductsController {
 
   @Get()
   findAllProducts() {
-    return 'Esta función regresa varios productos';
+    // Si esperamos una respuesta usaremos send(). Si no esperamos una respuesta usaremos emit().
+    // Tenemos que indicar el pattern y el payload validado.
+    return this.productsClient.send({ cmd: ProductTCP.FIND_ALL }, {});
   }
 
   @Get(':id')

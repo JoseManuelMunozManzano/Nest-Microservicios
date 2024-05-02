@@ -93,6 +93,29 @@ Ahora tenemos que registrar un `inyection token` para poder registrar un microse
 
 Como es fácil equivocarse al escribir `PRODUCT_SERVICE` lo que vamos a hacer en la carpeta `config` es crearnos un archivo `services.ts` e indicar ahí una constante con un valor de inyection token. Usaremos esa constante en vez del string.
 
+## Obtener todos los productos
+
+En `products.controller.ts` tenemos que inyectar en el constructor nuestro inyection token creado anteriormente (PRODUCT_SERVICE)
+
+```
+  constructor(
+    @Inject(PRODUCT_SERVICE) private readonly productsClient: ClientProxy,
+  ) {}
+```
+
+Con esto ya tenemos acceso a lo que sea que este expuesto en el proyecto `product-ms`. Por ejemplo, en este momento queremos conectarnos a nuestro `ProductTCP.FIND_ALL`
+
+Tenemos que crear en este client gateway, en `src` la carpeta `common`, dentro la carpeta `constants` y dentro el archivo `message_pattern.constants.ts` con la misma información que creamos en el proyecto products-ms. También creamos el archivo de barril `src/common/index.ts`
+
+```
+  @Get()
+  findAllProducts() {
+    // Si esperamos una respuesta usaremos send(). Si no esperamos una respuesta usaremos emit().
+    // Tenemos que indicar el pattern y el payload validado.
+    return this.productsClient.send({ cmd: ProductTCP.FIND_ALL }, {});
+  }
+```
+
 ## Testing
 
 - Clonar el repositorio
