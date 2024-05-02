@@ -29,6 +29,18 @@ nest new client-gateway
 npm run start:dev
 ```
 
+## Variables de entorno
+
+En la carpeta `src` creamos la carpeta `config` y dentro los archivos `envs.ts` e `index.ts`.
+
+Instalamos los paquetes joi y dotenv:
+
+```
+npm i joi dotenv
+```
+
+En el root creamos el archivo de variables de entorno `.env` y su template que es a lo que hacemos seguimiento `.env.template`.
+
 ## Testing
 
 - Clonar el repositorio
