@@ -7,9 +7,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { ProductTCP } from 'src/common';
+import { PaginationDto, ProductTCP } from 'src/common';
 import { PRODUCT_SERVICE } from 'src/config';
 
 @Controller('products')
@@ -24,10 +25,13 @@ export class ProductsController {
   }
 
   @Get()
-  findAllProducts() {
+  findAllProducts(@Query() paginationDto: PaginationDto) {
     // Si esperamos una respuesta usaremos send(). Si no esperamos una respuesta usaremos emit().
     // Tenemos que indicar el pattern y el payload validado.
-    return this.productsClient.send({ cmd: ProductTCP.FIND_ALL }, {});
+    return this.productsClient.send(
+      { cmd: ProductTCP.FIND_ALL },
+      paginationDto,
+    );
   }
 
   @Get(':id')

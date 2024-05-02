@@ -116,6 +116,32 @@ Tenemos que crear en este client gateway, en `src` la carpeta `common`, dentro l
   }
 ```
 
+## Paginar resultados y enviar payload
+
+Cogemos de nuestro proyecto `products-ms` la carpeta `common/dto` y lo copiamos a nuestro proyecto `client-gateway`.
+
+También instalamos los siguientes paquetes:
+
+```
+npm i class-transformer class-validator
+```
+
+Y hacemos la configuración de los global pipes en nuestro `main.ts`.
+
+Al final, nuestro método queda:
+
+```
+  @Get()
+  findAllProducts(@Query() paginationDto: PaginationDto) {
+    // Si esperamos una respuesta usaremos send(). Si no esperamos una respuesta usaremos emit().
+    // Tenemos que indicar el pattern y el payload validado.
+    return this.productsClient.send(
+      { cmd: ProductTCP.FIND_ALL },
+      paginationDto,
+    );
+  }
+```
+
 ## Testing
 
 - Clonar el repositorio
