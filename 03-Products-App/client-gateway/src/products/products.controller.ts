@@ -1,11 +1,11 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Inject,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -15,6 +15,8 @@ import { catchError, firstValueFrom } from 'rxjs';
 
 import { PaginationDto, ProductTCP } from 'src/common';
 import { PRODUCT_SERVICE } from 'src/config';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -23,8 +25,11 @@ export class ProductsController {
   ) {}
 
   @Post()
-  createProduct() {
-    return 'Crea un producto';
+  createProduct(@Body() createProductDto: CreateProductDto) {
+    return this.productsClient.send(
+      { cmd: ProductTCP.CREATE },
+      createProductDto,
+    );
   }
 
   @Get()
@@ -76,10 +81,6 @@ export class ProductsController {
     // Para obtener el error del microservicio.
     //
     // El send() devuelve un observable y, para escucharlo, tenemos que subscribirnos donde tendremos el error.
-    // Lo vamos a hacer primero de manera empírica con un try...catch
-    // NOTA: rxjs viene por defecto instalado en Nest.
-    // firstValueFrom permite trabajar como si fuera una promesa y recibe un observable como argumento, que dispara
-    // el subscribe.
     return this.productsClient.send({ cmd: ProductTCP.FIND_ONE }, { id }).pipe(
       catchError((err) => {
         throw new RpcException(err);
@@ -89,11 +90,26 @@ export class ProductsController {
 
   @Delete(':id')
   deleteProduct(@Param('id') id: string) {
-    return 'Esta función elimina el producto ' + id;
+    // Siempre es más fácil mandar un objeto {id} que un string id, ya que si el día de mañana
+    // tengo que enviar otra property es más fácil exapndir un objeto que transformar de string a objeto.
+    return this.productsClient.send({ cmd: ProductTCP.DELETE }, { id }).pipe(
+      catchError((err) => {
+        throw new RpcException(err);
+      }),
+    );
   }
 
   @Patch(':id')
-  patchProduct(@Param('id') id: string, @Body() body: any) {
-    return 'Esta función actualiza el producto ' + id;
+  patchProduct(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    return this.productsClient
+      .send({ cmd: ProductTCP.UPDATE }, { id, ...updateProductDto })
+      .pipe(
+        catchError((err) => {
+          throw new RpcException(err);
+        }),
+      );
   }
 }

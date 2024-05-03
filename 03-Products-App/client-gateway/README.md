@@ -161,6 +161,12 @@ En nuestra carpeta `common` vamos a crear una carpeta llamada `exceptions` y den
 
 Esta configuración funciona cuando se hace en el microservicio, pero nosotros lo estamos configurando en el cliente.
 
+## Implementar métodos faltantes
+
+Para la creación, actualización y eliminación, lo único que tenemos que hacer en el Gateway es validar los valores que recibimos y llamar de forma correcta teniendo en cuenta el @MessagePattern de nuestros microservicios.
+
+En la carpeta `products` copiamos la carpeta `products/dto` de nuestro micorservicio `products-ms`.
+
 ## Testing
 
 - Clonar el repositorio
