@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { RpcException } from '@nestjs/microservices';
 
@@ -55,7 +55,11 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     });
 
     if (!product) {
-      throw new RpcException(`Product with id #${id} not found`);
+      // Mandamos una excepción un poco más elaborada, como un objeto.
+      throw new RpcException({
+        message: `Product with id #${id} not found`,
+        status: HttpStatus.BAD_REQUEST,
+      });
     }
 
     return product;

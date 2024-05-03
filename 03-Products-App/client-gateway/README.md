@@ -149,7 +149,17 @@ En nuestro `products-ms` se ha cambiado, en `products.service.ts` la excepción 
 
 Trabajando con Rxjs y Observables, y try...catch también tenemos acceso al mensaje erroneo (si falla) y podemos capturarlo y hacer con el lo que queramos.
 
-Aunque lo que hemos hecho en nuestro `products.controller.ts` no es malo, vamos a atrapar los errores en un único lugar para que la respuesta de error siempre sea manejada como si fueran objetos.
+## Microservice Exception Filter
+
+Aunque lo que hemos hecho en nuestro `products.controller.ts` no es malo, vamos a atrapar los errores en un único lugar para que la respuesta de error siempre sea manejada como si fueran objetos, es decir, vamos a centralizar los errores usando un `rpcExceptionFilter`.
+
+https://docs.nestjs.com/microservices/exception-filters
+
+En esta documentación se indica que el global exception filter no funciona para aplicaciones híbridas (servicio REST y comunicaciones con microservicios)
+
+En nuestra carpeta `common` vamos a crear una carpeta llamada `exceptions` y dentro el archivo `rpc-custom-exception.filter.ts`.
+
+Esta configuración funciona cuando se hace en el microservicio, pero nosotros lo estamos configurando en el cliente.
 
 ## Testing
 
