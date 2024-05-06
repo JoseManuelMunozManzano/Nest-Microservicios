@@ -14,6 +14,8 @@ async function bootstrap() {
       transport: Transport.TCP,
       options: {
         port: envs.port, // Mandamos el puerto en las opciones
+        // Si queremos llevar los microservices a otro servidor distinto al gateway
+        // host: '::',
       },
     },
   );
