@@ -143,6 +143,36 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Change order status",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"DELIVERED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/orders/7fae471c-2232-4c9e-885d-5f84332922b5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"orders",
+						"7fae471c-2232-4c9e-885d-5f84332922b5"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -7,6 +7,7 @@ import {
   Inject,
   ParseUUIDPipe,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { ORDER_SERVICE } from 'src/config';
@@ -57,6 +58,21 @@ export class OrdersController {
         ...paginationDto,
         // Esto es porque mi microservicio orders-ms, método findAll() de orders.controller.ts espera
         // el tipo OrderPaginationDto, que tiene, como propiedad extendida, status.
+        status: statusDto.status,
+      });
+    } catch (error) {
+      throw new RpcException(error);
+    }
+  }
+
+  @Patch(':id')
+  changeStatus(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() statusDto: StatusDto,
+  ) {
+    try {
+      return this.ordersClient.send('changeOrderStatus', {
+        id,
         status: statusDto.status,
       });
     } catch (error) {

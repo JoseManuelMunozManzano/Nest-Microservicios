@@ -163,6 +163,14 @@ Esto nos da ciertos errores. Para solucionarlos, copiamos también de nuestro `c
 
 Y el único cambio que hacemos en el fuente `order-pagination.dto.ts` es que OrderStatus lo cogemos de Prisma.
 
+## Cambiar status de la orden
+
+Una vez creado el método `changeStatus()` en nuestro Gateway `client-gateway`, tenemos que ver qué vamos a recibir en nuestro microservicio `orders-ms`, controller `orders.controller.ts`, método `changeOrderStatus()`.
+
+Tenemos que crear otro dto.
+
+En la carpeta `orders/dto` creamos el dto `change-order-status.dto.ts`.
+
 ## Testing
 
 - Clonar el repositorio

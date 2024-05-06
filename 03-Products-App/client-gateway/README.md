@@ -246,7 +246,7 @@ Da un par de errores. El primero es de `@prisma/client`, pero en nuestro `client
 
 Creamos un archivo de barril `orders/dto/index.ts`.
 
-## Paginación y filtro
+### Paginación y filtro
 
 En principio, la idea es poder reutilizar nuestro dto `common/dto/pagination.dto`, pero necesitamos incluir un filtro para seleccionar el status de la orden. No es buena idea expandir el dto existente porque no voy a poder utilizarlo en otros lugares.
 
@@ -256,7 +256,7 @@ En la carpeta `orders/dto` creamos el dto `order-pagination.dto.ts`.
 
 Este nuevo dto es el que utilizamos en el controller `orders.controller.ts`.
 
-## Paginación y filtro alternativo
+### Paginación y filtro alternativo
 
 Decimos que en teoría no sería necesario extender el dto de la paginación para incluir el status, porque este podría venir como un segmento de la URL, por ejemplo `http://localhost:3000/api/orders/PENDING`, lo cual es más fácil que hacer el extends, pero se ha hecho por motivos pedagógicos.
 
@@ -276,6 +276,14 @@ Escogemos la primera posibilidad, por lo que ahora, findOne() tiene como anotaci
 Vemos que en Postman ahora funciona tanto el GET `Find order by Id` como el `GET Get all by status`.
 
 Ahora, si sabemos que no es un estado permitido no debemos hacer la petición. Nos creamos un dto especializado solo para verificar el status. En la carpeta `orders/dto` nos creamos el dto `status.dto.ts`.
+
+### Cambiar status de la orden
+
+Recordar que no se hacen eliminados físicos porque queremos mantener la integridad referencial entre las BD de los distintos microservicios.
+
+Solo vamos a cambiar el status de la orden.
+
+En nuestro controller `orders.controller.ts` creamos el nuevo método Patch `changeStatus()` y en el body queremos enviar el nuevo status. Aunque técnicamente se recomienda tener, por cada petición, dtos independiente, en este caso podemos reutilizar nuestro dto `status.dto.ts` (si tuviera más properties, lo suyo sería crearse otro dto)
 
 ## Testing
 
