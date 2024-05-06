@@ -183,6 +183,8 @@ Seleccionamos `REST API` y a la pregunta sobre si generar el CRUD, respondemos `
 
 La carpeta `entities` no la vamos a usar y la borramos.
 
+En la carpeta `dto` eliminamos el fichero `udpate-order.dto.ts` porque la actualización no la vamos a trabajar de esta manera.
+
 El controller `orders.controller.ts` hace una inyección de un servicio. Como no lo necesitamos, borramos la property del constructor. Borramos también los métodos `update()` y `remove()` porque no los vamos a usar.
 
 Borramos el servicio `orders.service.ts`.
@@ -233,6 +235,16 @@ En nuestro módulo `orders.module.ts` configuramos en los imports el microservic
 ```
 
 Por último, en nuestro controller inyectamos el `ORDER_SERVICE` creado y conectamos los métodos `create()`, `findAll()` y `findOne()` al microservicio `orders-ms`.
+
+### Crear una nueva Orden
+
+Una vez hecha la parte `Crear una nueva Orden` en nuestro microservicio `orders-ms` tenemos que crear también el dto para la creación de una orden.
+
+Para hacerlo rápido, lo que hacemos es sustituir nuestro dto `orders/dto/create-order.dto.ts` por el que hay en el microservicio `orders-ms`.
+
+Da un par de errores. El primero es de `@prisma/client`, pero en nuestro `client-gateway` no nos hace falta instalar Prisma, así que eliminamos ese import. La enumeración si nos hace falta, así que la copiamos desde nuestro microservicio `orders-ms`. De nuestro fichero `order.enum.ts` también eliminamos el import de `@prisma/client` y creamos en ese archivo la enumeración que nos interesa.
+
+Creamos un archivo de barril `orders/dto/index.ts`.
 
 ## Testing
 

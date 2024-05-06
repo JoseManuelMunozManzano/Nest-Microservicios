@@ -77,8 +77,13 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
+					"mode": "raw",
+					"raw": "{\n    \"totalAmount\": 150,\n    \"totalItems\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
 					"raw": "http://localhost:3000/api/orders",

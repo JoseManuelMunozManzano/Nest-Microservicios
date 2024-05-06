@@ -126,6 +126,35 @@ export class OrdersService extends PrismaClient implements OnModuleInit {
 }
 ```
 
+## Crear una nueva orden
+
+Añadimos la información que esperamos en nuestro dto `create-order.dto.ts`.
+
+Instalamos los siguientes paquetes:
+
+```
+npm i class-validator class-transformer
+```
+
+Configuramos los global pipes en nuestro fichero `main.ts`.
+
+```
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+```
+
+Decoramos nuestro dto `create-order.dto.ts` con las validaciones que tiene que cumplir la data que nos envían.
+
+Para controlar la validación de la enumeración, creamos en la carpeta `dto`, la carpeta `enum` y dentro la enumeración `order.enum.ts`. Realmente es un arreglo que hace referencia a los distintos valores posibles de la enumeración `OrderStatus` de mi `schema.prisma`.
+
+Como podemos tener varios dtos, en la carpeta `dto` nos creamos un archivo de barril `index.ts`.
+
+Con todo esto ya configurado, podemos ir a nuestro controller `orders.controller.ts` y nuestro service `orders.service.ts` y empezar a codificar para poder crear una nueva orden.
+
 ## Testing
 
 - Clonar el repositorio
