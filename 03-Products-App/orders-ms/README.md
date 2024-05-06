@@ -72,9 +72,29 @@ De los métodos generados en el controller `orders.controller.ts` eliminamos `up
 
 De los métodos generados en el service `orders.service.ts` eliminamos `update()` y `remove()` porque no los vamos a usar, y vamos a crear un método `changeStatus()` para hacer borrados lógicos.
 
+## Docker - Levantar PostgreSQL
+
+En el root de nuestra aplicación nos creamos el archivo `docker-compose.yml` y lo configuramos.
+
+Este archivo yo lo voy a ejecutar en mi Raspberry Pi porque es ahí donde quiero tener mi contenedor, de la siguiente forma:
+
+`docker compose up -d`
+
+En Squirrel me he generado la siguiente conexión:
+
+```
+Nombre: PostgreSQL_RaspberryPi
+Driver: PostgreSQL
+URL: jdbc:postgresql://192.168.1.41:5432/ordersdb
+Nombre de usuario: postgres
+Contraseña: 123456
+```
+
 ## Testing
 
 - Clonar el repositorio
 - Instalar dependencias
 - Crear un archivo `.env` basado en `env.template`
+- Levantar la base de datos en Raspberry Pi
+  - Ir a la ruta `/home/pi/docker/postgresql/orders-ms` y ejecutar `docker compose up -d`
 - Ejecutar `npm run start:dev`
