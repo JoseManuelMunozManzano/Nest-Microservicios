@@ -10,8 +10,9 @@ import {
 } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { ORDER_SERVICE } from 'src/config';
-import { CreateOrderDto, OrderPaginationDto } from './dto';
+import { CreateOrderDto, OrderPaginationDto, StatusDto } from './dto';
 import { firstValueFrom } from 'rxjs';
+import { PaginationDto } from 'src/common';
 
 @Controller('orders')
 export class OrdersController {
@@ -30,7 +31,8 @@ export class OrdersController {
     return this.ordersClient.send('findAllOrders', orderPaginationDto);
   }
 
-  @Get(':id')
+  // Se añade a la ruta id/ para que no colisione con el método findAllByStatus() de abajo
+  @Get('id/:id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     try {
       const order = await firstValueFrom(
@@ -38,6 +40,25 @@ export class OrdersController {
       );
 
       return order;
+    } catch (error) {
+      throw new RpcException(error);
+    }
+  }
+
+  // Si sabemos que no es un estado permitido no debemos hacer la petición.
+  // Nos creamos un dto especializado (StatusDto) solo para verificar el status.
+  @Get(':status')
+  async findAllByStatus(
+    @Param() statusDto: StatusDto,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    try {
+      return this.ordersClient.send('findAllOrders', {
+        ...paginationDto,
+        // Esto es porque mi microservicio orders-ms, método findAll() de orders.controller.ts espera
+        // el tipo OrderPaginationDto, que tiene, como propiedad extendida, status.
+        status: statusDto.status,
+      });
     } catch (error) {
       throw new RpcException(error);
     }

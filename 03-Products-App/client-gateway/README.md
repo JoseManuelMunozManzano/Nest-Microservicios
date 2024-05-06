@@ -256,7 +256,26 @@ En la carpeta `orders/dto` creamos el dto `order-pagination.dto.ts`.
 
 Este nuevo dto es el que utilizamos en el controller `orders.controller.ts`.
 
+## Paginación y filtro alternativo
+
 Decimos que en teoría no sería necesario extender el dto de la paginación para incluir el status, porque este podría venir como un segmento de la URL, por ejemplo `http://localhost:3000/api/orders/PENDING`, lo cual es más fácil que hacer el extends, pero se ha hecho por motivos pedagógicos.
+
+Si intentamos ejecutar este GET en Postman veremos que da un error indicando que se esperaba un UUID. Esto es porque, tal y como tenemos nuestros endpoints, o indicamos `api/orders` o `api/orders/{id}`, pero no podemos indicar un status.
+
+Para corregir esto, tenemos que crear un nuevo GET que reciba un status. Esto se hace en nuestro controller `orders.controller.ts`, donde hemos creado el nuevo método `findAllByStatus()`.
+
+Pero sigue fallando el GET en Postman porque hay colisión entre los dos GET (Nest trabaja basado en el orden en que aparecen los endpoints), y no es buena prática que haya colisión entre identificadores.
+
+Hay dos posibilidades:
+
+- Cambiar `findOne()` para que funcione de la forma `http://localhost:3000/api/orders/id/7fae471c-2232-4c9e-885d-5f84332922b5` (se ha añadido /id/)
+- Hacer diferente la versión con el filtro alternativo
+
+Escogemos la primera posibilidad, por lo que ahora, findOne() tiene como anotación `Get('id/:id')`.
+
+Vemos que en Postman ahora funciona tanto el GET `Find order by Id` como el `GET Get all by status`.
+
+Ahora, si sabemos que no es un estado permitido no debemos hacer la petición. Nos creamos un dto especializado solo para verificar el status. En la carpeta `orders/dto` nos creamos el dto `status.dto.ts`.
 
 ## Testing
 

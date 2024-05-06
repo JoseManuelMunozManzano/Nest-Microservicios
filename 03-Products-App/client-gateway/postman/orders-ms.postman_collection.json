@@ -60,7 +60,7 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/orders/7fae471c-2232-4c9e-885d-5f84332922b5",
+					"raw": "http://localhost:3000/api/orders/id/7fae471c-2232-4c9e-885d-5f84332922b5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -69,6 +69,7 @@
 					"path": [
 						"api",
 						"orders",
+						"id",
 						"7fae471c-2232-4c9e-885d-5f84332922b5"
 					]
 				}
@@ -99,6 +100,45 @@
 					"path": [
 						"api",
 						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all by status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/orders/CANCELLED?page=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"orders",
+						"CANCELLED"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "1",
+							"disabled": true
+						}
 					]
 				}
 			},
