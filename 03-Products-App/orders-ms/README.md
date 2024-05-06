@@ -46,6 +46,32 @@ npm i dotenv joi
 
 Siendo `joi` el validador del esquema
 
+## Configurar OrdersMicroservice
+
+Documentación: https://docs.nestjs.com/microservices/basics
+
+Realizamos la instalación del siguiente paquete:
+
+```
+npm i --save @nestjs/microservices
+```
+
+En el fichero `main.ts`, en vez de hacer la creación tradicional, se usa `createMicroservice` donde se especifica el tipo de transporte que queremos.
+
+Vamos a usar Nest CLI para que nos cree un resource pero de microservicios (el --no-spec es para que no cree el archivo de pruebas):
+
+```
+nest g res orders --no-spec
+```
+
+Seleccionamos la opción `Microservice (non-HTTP)` y a la pregunta de si queremos generar el CRUD respondemos `Y`.
+
+De lo generado, borramos la carpeta `entities` porque vamos a seguir trabajando con `Prisma`.
+
+De los métodos generados en el controller `orders.controller.ts` eliminamos `update()` y `remove()` porque no los vamos a usar, y vamos a crear un método `changeOrderStatus()` para hacer borrados lógicos.
+
+De los métodos generados en el service `orders.service.ts` eliminamos `update()` y `remove()` porque no los vamos a usar, y vamos a crear un método `changeStatus()` para hacer borrados lógicos.
+
 ## Testing
 
 - Clonar el repositorio
