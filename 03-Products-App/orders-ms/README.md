@@ -90,6 +90,42 @@ Nombre de usuario: postgres
 Contraseña: 123456
 ```
 
+## Prisma - Modelo y conexión
+
+https://docs.nestjs.com/recipes/prisma
+
+Vamos a conectar nuestro `orders-ms` con la BD PostgreSQL.
+
+Instalamos el paquete Prisma: `npm install prisma -D`
+
+Inicializamos la configuración inicial de Prisma: `npx prisma init`. Esto crea la carpeta `prisma` y dentro el archivo `schema.prisma`. También, en nuestro archivo `.env` crea la cadena de conexión a nuestro PostgreSQL, que habrá que modificar a:
+
+```
+DATABASE_URL="postgresql://postgres:123456@192.168.1.41:5432/ordersdb?schema=public"
+```
+
+Copiamos esa cadena de conexión a nuestro archivo `.env.template`.
+
+Abrimos nuestro archivo `schema.prisma` y configuramos como luce nuestro modelo y toda la relación que vamos a tener con nuestra BD.
+
+Una vez hecho, ejecutamos la migración: `npx prisma migrate dev --name init`. Esto crea la carpeta `prisma/migrations` y ciertos archivos que no hay que tocar.
+
+Instalamos y generamos el Prisma Client: `npm install @prisma/client`.
+
+Si nos vamos a nuestra conexión de Squirrel podemos ejecutar: `SELECT * FROM "Order"` y ver la tabla ya creada.
+
+Por último, en nuestro service `orders.service.ts` tenemos que añadir esta parte de extends y el método `onModuleInit()`. Esto es para realizar la inicialización/conexión de nuestra BD.
+
+```
+export class OrdersService extends PrismaClient implements OnModuleInit {
+  async onModuleInit() {
+    await this.$connect();
+  }
+
+  ....
+}
+```
+
 ## Testing
 
 - Clonar el repositorio
@@ -97,4 +133,5 @@ Contraseña: 123456
 - Crear un archivo `.env` basado en `env.template`
 - Levantar la base de datos en Raspberry Pi
   - Ir a la ruta `/home/pi/docker/postgresql/orders-ms` y ejecutar `docker compose up -d`
+- Ejecutar migración de Prisma `npx prisma migrate dev`
 - Ejecutar `npm run start:dev`
