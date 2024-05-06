@@ -49,7 +49,7 @@ Creamos la configuración de las rutas para que los endpoints que creamos en el 
 nest g res products
 ```
 
-En este caso, recordar que nuestro gateway si es un REST API endpoint, y a la pregunta de si queremos crear un CRUD entry points indicamos `n` porque no nos hace falta todo lo que el CRUD crea por defecto.
+En este caso, recordar que nuestro gateway si es un `REST API` endpoint, y a la pregunta de si queremos crear un CRUD entry points indicamos `n` porque no nos hace falta todo lo que el CRUD crea por defecto.
 
 De todo lo que crea nos creamos con el controlador y el module, pero vacíos.
 
@@ -167,11 +167,84 @@ Para la creación, actualización y eliminación, lo único que tenemos que hace
 
 En la carpeta `products` copiamos la carpeta `products/dto` de nuestro micorservicio `products-ms`.
 
+## Conectar Gateway con OrdersMicroservice
+
+Recordar que tenemos que estar ejecutando tanto este `client-gateway` como el microservicio `orders-ms`.
+
+Tenemos que implementar los métodos `create()`, `findAll()` y `findOne()` del proyecto `orders-ms` para obtener las respuestas de dicho microservicio.
+
+Para empezar, generamos los resources:
+
+```
+nest g res orders --no-spec
+```
+
+Seleccionamos `REST API` y a la pregunta sobre si generar el CRUD, respondemos `Y`, pero vamos a borrar bastantes cosas.
+
+La carpeta `entities` no la vamos a usar y la borramos.
+
+El controller `orders.controller.ts` hace una inyección de un servicio. Como no lo necesitamos, borramos la property del constructor. Borramos también los métodos `update()` y `remove()` porque no los vamos a usar.
+
+Borramos el servicio `orders.service.ts`.
+
+En nuestro módulo `orders.module.ts` eliminamos el provider completo, porque hace referencia al servicio que no usamos.
+
+En la carpeta `config`, archivo `services.ts` incluimos la constante:
+
+```
+export const ORDER_SERVICE = 'ORDER_SERVICE';
+```
+
+En nuestro fichero de variables de entorno `.env` y su template `.env.template` añadimos:
+
+```
+ORDERS_MICROSERVICE_HOST=localhost
+ORDERS_MICROSERVICE_PORT=3002
+```
+
+Y lo configuramos con `Joi` en el fichero `config/envs.ts`.
+
+En nuestro módulo `orders.module.ts` configuramos en los imports el microservicio con el que queremos comunicarnos:
+
+```
+  imports: [
+    // Es un arreglo porque podemos indicar cualquier número de microservicios
+    // con los que queramos comunicarnos.
+    //
+    // El ORDER_SERVICE es lo que vamos a usar para inyectar el microservicio en los
+    // controladores u otros lugares como services...
+    //
+    // El valor indicado en transport tiene que ser el mismo canal de comunicación que
+    // indicamos en el archivo main.ts de nuestro proyecto orders-ms
+    //
+    // También tenemos que indicar el host y el puerto del host.
+    // Esto lo hacemos en variables de entorno.
+    ClientsModule.register([
+      {
+        name: ORDER_SERVICE,
+        transport: Transport.TCP,
+        options: {
+          host: envs.ordersMicroserviceHost,
+          port: envs.ordersMicroservicePort,
+        },
+      },
+    ]),
+  ],
+```
+
+Por último, en nuestro controller inyectamos el `ORDER_SERVICE` creado y conectamos los métodos `create()`, `findAll()` y `findOne()` al microservicio `orders-ms`.
+
 ## Testing
 
 - Clonar el repositorio
 - Instalar dependencias
 - Ejecutar `npm run start:dev`
 - Levantar de manera independiente el proyecto products-ms usando también Peacock para diferenciar el espacio de trabajo: `npm run start:dev`
+- Levantar de manera independiente el proyecto orders-ms usando también Peacock para diferenciar el espacio de trabajo: `npm run start:dev`
 
-Postman: En la carpeta del root `postman` dejo los ejemplos de rutas a ejecutar para hacer POST, GET, PATCH y DELETE a products.
+Postman:
+
+En la carpeta del root `postman` dejo:
+
+- Los ejemplos de rutas a ejecutar para hacer POST, GET, PATCH y DELETE a products.
+- Los ejemplos de rutas a ejecutar para hacer POST y GET a orders.

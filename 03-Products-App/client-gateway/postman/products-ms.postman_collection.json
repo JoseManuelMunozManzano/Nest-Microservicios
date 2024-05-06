@@ -1,11 +1,76 @@
 {
 	"info": {
 		"_postman_id": "1c4fea2b-ff43-439a-933a-1cee84c79b9b",
-		"name": "ProductsApp",
+		"name": "products-ms",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7508044"
 	},
 	"item": [
+		{
+			"name": "Find products",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/products?page=1&limit=20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find product by Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/products/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
 		{
 			"name": "Create product",
 			"request": {
@@ -42,71 +107,6 @@
 			"response": []
 		},
 		{
-			"name": "Find products",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/products?page=1&limit=10",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"products"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1"
-						},
-						{
-							"key": "limit",
-							"value": "10"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Find product by Id",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/products/4",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"products",
-						"4"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Update product",
 			"request": {
 				"method": "PATCH",
@@ -121,13 +121,13 @@
 						},
 						{
 							"key": "price",
-							"value": "100.5555",
+							"value": "100.551",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/products/5",
+					"raw": "http://localhost:3000/api/products/51",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -136,7 +136,7 @@
 					"path": [
 						"api",
 						"products",
-						"5"
+						"51"
 					]
 				}
 			},
@@ -152,7 +152,7 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/products/5",
+					"raw": "http://localhost:3000/api/products/51",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -161,7 +161,7 @@
 					"path": [
 						"api",
 						"products",
-						"5"
+						"51"
 					]
 				}
 			},
