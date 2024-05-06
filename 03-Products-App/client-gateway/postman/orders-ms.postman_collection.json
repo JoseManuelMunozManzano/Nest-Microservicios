@@ -56,7 +56,7 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/orders/6",
+					"raw": "http://localhost:3000/api/orders/7fae471c-2232-4c9e-885d-5f84332922b5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -65,7 +65,7 @@
 					"path": [
 						"api",
 						"orders",
-						"6"
+						"7fae471c-2232-4c9e-885d-5f84332922b5"
 					]
 				}
 			},
