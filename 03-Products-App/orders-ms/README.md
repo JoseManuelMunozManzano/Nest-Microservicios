@@ -155,6 +155,14 @@ Como podemos tener varios dtos, en la carpeta `dto` nos creamos un archivo de ba
 
 Con todo esto ya configurado, podemos ir a nuestro controller `orders.controller.ts` y nuestro service `orders.service.ts` y empezar a codificar para poder crear una nueva orden.
 
+## Paginación y filtro
+
+Una vez hecha la parte de nuestro `client-gateway` cogemos su fuente `orders/dto/order-pagination.dto.ts` y lo copiamos en nuestro microservicio `orders-ms` en la ruta `orders/dto`.
+
+Esto nos da ciertos errores. Para solucionarlos, copiamos también de nuestro `client-gateway` la carpeta `common` a nuestro microservicio `orders-ms` en la carpeta `src`.
+
+Y el único cambio que hacemos en el fuente `order-pagination.dto.ts` es que OrderStatus lo cogemos de Prisma.
+
 ## Testing
 
 - Clonar el repositorio

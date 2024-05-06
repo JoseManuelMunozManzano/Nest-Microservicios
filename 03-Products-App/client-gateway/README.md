@@ -246,6 +246,18 @@ Da un par de errores. El primero es de `@prisma/client`, pero en nuestro `client
 
 Creamos un archivo de barril `orders/dto/index.ts`.
 
+## Paginación y filtro
+
+En principio, la idea es poder reutilizar nuestro dto `common/dto/pagination.dto`, pero necesitamos incluir un filtro para seleccionar el status de la orden. No es buena idea expandir el dto existente porque no voy a poder utilizarlo en otros lugares.
+
+Es por eso que nos creamos un nuevo dto que va a extender de nuestro `pagination.dto`, aunque veremos luego que en teoría no sería necesario.
+
+En la carpeta `orders/dto` creamos el dto `order-pagination.dto.ts`.
+
+Este nuevo dto es el que utilizamos en el controller `orders.controller.ts`.
+
+Decimos que en teoría no sería necesario extender el dto de la paginación para incluir el status, porque este podría venir como un segmento de la URL, por ejemplo `http://localhost:3000/api/orders/PENDING`, lo cual es más fácil que hacer el extends, pero se ha hecho por motivos pedagógicos.
+
 ## Testing
 
 - Clonar el repositorio

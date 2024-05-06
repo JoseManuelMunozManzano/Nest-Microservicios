@@ -19,7 +19,7 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/orders?page=1&limit=20",
+					"raw": "http://localhost:3000/api/orders?page=1&limit=10&status=PENDING",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -36,7 +36,11 @@
 						},
 						{
 							"key": "limit",
-							"value": "20"
+							"value": "10"
+						},
+						{
+							"key": "status",
+							"value": "PENDING"
 						}
 					]
 				}
