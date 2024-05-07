@@ -13,8 +13,7 @@ import {
   OrderPaginationDto,
 } from './dto';
 import { PRODUCT_SERVICE } from 'src/config';
-import { firstValueFrom, map } from 'rxjs';
-import { SourceTextModule } from 'vm';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class OrdersService extends PrismaClient implements OnModuleInit {
