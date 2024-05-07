@@ -232,6 +232,62 @@ Tenemos que cambiar nuestro DTO, situado en `orders/dto/create-order.dto.ts`.
 
 Y tenemos que crear un DTO de items. En `orders/dto` creamos el nuevo dto `order-item.dto.ts`.
 
+### Comunicar order-ms con products-ms
+
+La configuración para comunicarnos con products-ms se hace en nuestro microservicio `orders-ms`, en `orders.module.ts`.
+
+Los pasos son:
+
+- Archivo .env y .env.template
+
+```
+PRODUCTS_MICROSERVICE_HOST=localhost
+PRODUCTS_MICROSERVICE_PORT=3001
+```
+
+- Archivo envs.ts. Configuramos y acabamos exportando
+
+```
+  productsMicroserviceHost: envVars.PRODUCTS_MICROSERVICE_HOST,
+  productsMicroservicePort: envVars.PRODUCTS_MICROSERVICE_PORT,
+```
+
+- Nos creamos en la carpeta `config` el archivo `services.ts`
+
+```
+export const PRODUCT_SERVICE = 'PRODUCT_SERVICE';
+```
+
+- En el módulo `orders.module.ts` importamos PRODUCT_SERVICE
+
+```
+  imports: [
+    // Es un arreglo porque podemos indicar cualquier número de microservicios
+    // con los que queramos comunicarnos.
+    //
+    // El PRODUCT_SERVICE es lo que vamos a usar para inyectar el microservicio en los
+    // controladores u otros lugares como services...
+    //
+    // El valor indicado en transport tiene que ser el mismo canal de comunicación que
+    // indicamos en el archivo main.ts de nuestro proyecto product-ms
+    //
+    // También tenemos que indicar el host y el puerto del host.
+    // Esto lo hacemos en variables de entorno.
+    ClientsModule.register([
+      {
+        name: PRODUCT_SERVICE,
+        transport: Transport.TCP,
+        options: {
+          host: envs.productsMicroserviceHost,
+          port: envs.productsMicroservicePort,
+        },
+      },
+    ]),
+  ],
+```
+
+Para confirmar que todo esto funciona, es nuestro service `orders.service.ts` añadimos un constructor y modificamos el método `create()`
+
 ## Testing
 
 - Clonar el repositorio
