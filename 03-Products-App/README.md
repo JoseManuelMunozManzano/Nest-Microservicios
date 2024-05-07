@@ -24,6 +24,28 @@ Además la órdenes van a hablar con el microservicio de productos para validar 
 
 NOTA: Este sigue sin ser el esquema final, solo vemos como va evolucionando el proyecto.
 
+## Problemas del Objetivo 2 y posibles soluciones
+
+Todavía no, pero si el proyecto sigue creciendo, llega un punto donde vamos a perder el control de qué llama a qué, o como crecen nuestros microservicios.
+
+El problema es, por ejemplo, si queremos que tras una transacción o un evento, queremos notificar a dos o tres microservicios de manera simultanea. Esto puede acabar siendo un follón.
+
+Una cosa que ayuda muchísimo es utilizar lo que se llama un Service Broker, un midddleman que se encarga de procesar todo ese montón de paquetes y pedidos entre microservicios.
+
+Con todo esto, vamos a transformar nuestra estructura actual de microservicios al Objetivo 3.
+
+![alt Objetivo 3](./images/Objetivo_3.png)
+
+Vamos a incluir un servidor NATS.
+
+Documentación: https://nats.io/ (Se recomienda ver el video de 8 min. que aparece al final de esa web)
+
+La idea es que todos nuestros servicios hablen/escuchen con el servidor de NATS y estén subscritos a unos mensajes.
+
+El NATS Server se va a encargar de notificar a todos nuestros microservicios a los que les interese un mensaje concreto. Por ejemplo, yo puedo tener el mensaje `creación de una orden`. Más de un microservicio puede estar escuchando la creación de una orden y reaccionar basado en el. Esto ayuda a eliminar comunicaciones y conexiones directas entre microservicios, aunque se puede mantener una comunicación con NATS y a la vez una comunicación uno a uno entre microservicios (con TCP o lo que sea), no es excluyente.
+
+El uso de NATS Server hace más sencillo de programar y de mantener, incluido la gestión de errores, nuestros microservicios.
+
 ## Testing
 
 En cada proyecto aparece un apartado de testing, pero si es importante tener siempre levantado, como mínimo, el proyecto `client-gateway`, que es el que se comunica con los microservicios, y al menos un microservicio, para poder probar algo.
