@@ -285,6 +285,34 @@ Solo vamos a cambiar el status de la orden.
 
 En nuestro controller `orders.controller.ts` creamos el nuevo método Patch `changeStatus()` y en el body queremos enviar el nuevo status. Aunque técnicamente se recomienda tener, por cada petición, dtos independiente, en este caso podemos reutilizar nuestro dto `status.dto.ts` (si tuviera más properties, lo suyo sería crearse otro dto)
 
+## Objetivo 2
+
+Ver el README.md del microservicio `orders-ms`.
+
+### DTOs de creación de orden
+
+Vamos a cambiar la forma de hacer el POST de una orden.
+
+No tiene sentido pedir que me manden `totalAmount` ni `totalItems`, ya que esto depende del detalle de la orden.
+
+Lo vamos a cambiar a este tipo de json:
+
+```
+  {
+    "items": [
+      {
+        "productId": 1,
+        "price": 100,
+        "quantity": 2
+      }
+    ]
+  }
+```
+
+Reemplazamos nuestro `orders/dto/create-order.dto.ts` con el dto `create-order.dto.ts` del microservicio `orders-ms`.
+
+Y, también de nuestro microservicio `orders-ms` copiamos a nuestro `client-gateway`, a la ruta `orders/dto` el dto `order-item.dto.ts`.
+
 ## Testing
 
 - Clonar el repositorio

@@ -1,30 +1,14 @@
-import {
-  IsBoolean,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsPositive,
-} from 'class-validator';
-import { OrderStatus, OrderStatusList } from './enum/order.enum';
+import { ArrayMinSize, IsArray, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { OrderItemDto } from './order-item.dto';
 
 // La data que vamos a aceptar y validar para que venga como requerimos.
 export class CreateOrderDto {
-  @IsNumber()
-  @IsPositive()
-  totalAmount: number;
-
-  @IsNumber()
-  @IsPositive()
-  totalItems: number;
-
-  // Este OrderStatus viene de la enumeración creada en el fichero order.enum.ts
-  @IsEnum(OrderStatusList, {
-    message: `Possible status values are ${OrderStatusList}`,
-  })
-  @IsOptional()
-  status: OrderStatus = OrderStatus.PENDING;
-
-  @IsBoolean()
-  @IsOptional()
-  paid: boolean = false;
+  @IsArray()
+  @ArrayMinSize(1)
+  // Para validar internamente cada uno de los elementos de los items, ya que los items van a ser otro dto.
+  @ValidateNested({ each: true })
+  // Cada elemento del arreglo es de este tipo
+  @Type(() => OrderItemDto)
+  items: OrderItemDto[];
 }

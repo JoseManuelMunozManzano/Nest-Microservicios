@@ -208,6 +208,30 @@ Si nos vamos a nuestra conexión de Squirrel podemos ejecutar:
 - `SELECT * FROM "Order"`
 - `SELECT * FROM "OrderItem"`
 
+### DTOs de creación de orden
+
+Vamos a cambiar la forma de hacer el POST de una orden.
+
+No tiene sentido pedir que me manden `totalAmount` ni `totalItems`, ya que esto depende del detalle de la orden.
+
+Lo vamos a cambiar a este tipo de json:
+
+```
+  {
+    "items": [
+      {
+        "productId": 1,
+        "price": 100,
+        "quantity": 2
+      }
+    ]
+  }
+```
+
+Tenemos que cambiar nuestro DTO, situado en `orders/dto/create-order.dto.ts`.
+
+Y tenemos que crear un DTO de items. En `orders/dto` creamos el nuevo dto `order-item.dto.ts`.
+
 ## Testing
 
 - Clonar el repositorio

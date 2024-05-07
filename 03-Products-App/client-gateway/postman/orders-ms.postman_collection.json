@@ -83,7 +83,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"totalAmount\": 150,\n    \"totalItems\": 3\n}",
+					"raw": "  {\n    \"items\": [\n      {\n        \"productId\": 1,\n        \"price\": 100,\n        \"quantity\": 2\n      },\n      {\n        \"productId\": 2,\n        \"price\": 50,\n        \"quantity\": 4\n      }\n    ]\n  }",
 					"options": {
 						"raw": {
 							"language": "json"
