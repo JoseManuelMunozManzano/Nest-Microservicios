@@ -246,6 +246,16 @@ En la carpeta `common` creamos la carpeta `constants` y dentro el fuente `messag
 
 En nuestro fuente `products.service.ts`, en vez de lanzar la excepcion `NotFoundException` se puede lanzar una excepción `RpcException` con la idea de que nuestro client-gateway la pueda recuperar. Con esto, cuando se lance esta excepción, tendremos en la consola de nuestro client-gateway el log del error con una mejor información.
 
+## Objetivo 2
+
+### ProductsMicroservice - Validar productos por Ids
+
+Vamos a establecer una comunicación con el microservicio `orders-ms` de forma que vamos a comprobar si existen los productos (items) de una orden.
+
+Para ello, modificamos nuestro controller `products.controller.ts`, creando un nuevo método `validateProducts()`.
+
+Y en nuestro service `products.service.ts` crearemos también el método `validateProducts()`.
+
 ## Testing
 
 - Clonar el repositorio

@@ -102,4 +102,34 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     //   where: { id },
     // });
   }
+
+  async validateProducts(ids: number[]) {
+    // Quitamos elementos duplicados.
+    //
+    // Lo hacemos porque, aunque en este proyecto no lo tenemos en cuenta, puede que, para ropa
+    // tengamos la talla, y que compremos dos veces el mismo id de producto, pero para diferentes
+    // tallas. Por tanto, yo solo quiero que exista el id del producto, independientemente de si
+    // está o no duplicado.
+    ids = Array.from(new Set(ids));
+
+    const products = await this.product.findMany({
+      // Si no existe no lo devuelte.
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    // Si la longitud sigue siendo la misma es porque devolvió todos los ids, luego
+    // to-dos existen.
+    if (products.length !== ids.length) {
+      throw new RpcException({
+        message: 'Some products were not found',
+        status: HttpStatus.BAD_REQUEST,
+      });
+    }
+
+    return products;
+  }
 }
