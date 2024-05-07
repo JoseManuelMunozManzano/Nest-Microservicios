@@ -12,7 +12,7 @@ Puntualmente veremos:
 
 No haremos un CRUD completo porque las órdenes no se actualizarán más que para cambiar su estado de CANCELADA, ENTREGADA y PENDIENTE.
 
-SIGUIENTE SECCION
+SIGUIENTE SECCION - OBJETIVO 2
 
 El objetivo macro es realizar un detalle de órdenes dentro del microservicio de órdenes (orders-ms). Vamos a tener también una comunicación directa entre el microservicio de productos (product-ms) con este microservicio de órdenes (orders-ms), para verificar que dichos productos existen antes de crear dichas órdenes.
 
@@ -192,6 +192,21 @@ Una vez creado el método `changeStatus()` en nuestro Gateway `client-gateway`, 
 Tenemos que crear otro dto.
 
 En la carpeta `orders/dto` creamos el dto `change-order-status.dto.ts`.
+
+## Objetivo 2
+
+### OrderItems - Detalles de la orden
+
+Para facilitar el manejo del estado, modificamos nuestro `schema.prisma` indicando que, cuando se crea una orden, el status tendrá el valor por defecto PENDING.
+
+Además, en `schema.prisma` vamos a crear otro modelo, `OrderItem`, que es el detalle de nuestro modelo ya existente `Order`.
+
+Una vez codificado, tenemos que impactar en la BD. Para ello migramos: `npx prisma migrate dev --name order-item`
+
+Si nos vamos a nuestra conexión de Squirrel podemos ejecutar:
+
+- `SELECT * FROM "Order"`
+- `SELECT * FROM "OrderItem"`
 
 ## Testing
 

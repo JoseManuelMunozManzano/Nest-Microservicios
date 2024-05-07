@@ -25,10 +25,24 @@ model Order {
   totalAmount Float
   totalItems  Int
 
-  status OrderStatus
+  status OrderStatus @default(PENDING)
   paid   Boolean     @default(false)
   paidAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // He escrito esto y he grabado (Cmd+S)...
+  OrderItem OrderItem[]
+}
+
+model OrderItem {
+  id        String @id @default(uuid())
+  productId Int
+  quantity  Int
+  price     Float
+
+  // ... y esta relación se ha generado automáticamente, sin tener que escribirla.
+  Order   Order?  @relation(fields: [orderId], references: [id])
+  orderId String?
 }
