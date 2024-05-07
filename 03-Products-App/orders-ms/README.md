@@ -12,6 +12,28 @@ Puntualmente veremos:
 
 No haremos un CRUD completo porque las órdenes no se actualizarán más que para cambiar su estado de CANCELADA, ENTREGADA y PENDIENTE.
 
+SIGUIENTE SECCION
+
+El objetivo macro es realizar un detalle de órdenes dentro del microservicio de órdenes (orders-ms). Vamos a tener también una comunicación directa entre el microservicio de productos (product-ms) con este microservicio de órdenes (orders-ms), para verificar que dichos productos existen antes de crear dichas órdenes.
+
+Recordar que, como son BD separadas, no tenemos una manera directa de verificar si, en nuestra BD de órdenes, existe el producto en estado alta. Tendremos que validar que existe el producto antes de insertarlo en una orden.
+
+Vamos a tener que cambiar el dto de una creación de una orden para que aceptemos los items. En nuestro microservicio orders-ms también tendremos que realizar esa modificación para aceptar esa orden. Y, en el microservicio products-ms también tendremos que crear un método en el que recibamos los ids de los productos y verificar que existen. Si no existen, tendremos que lanzar una excepción.
+
+Este ejemplo de microservicio nos va a dar la pauta de por qué es conveniente introducir algún tipo de middleman como Nats o RabbitMQ, algún sistema que nos sirva para mantener el orden cuando existen tantos microservicios.
+
+Por tanto, en esta sección estaremos trabajando con los 3 proyectos creados hasta el momento, puntualmente haremos:
+
+- Gateway - Validación de orden con su detalle de orden
+- OrdersMicroservice - Creación de la orden y su detalle
+- ProductsMicroservice - Verificación de que cada producto existe en la base de datos.
+
+Haremos validación de DTOs compuestos, comunicación entre microservicios y validación y retorno de la data esperada.
+
+El objetivo dos es este, y nos concentramos en elevar nuestro microservicio de órdenes para que maneje el detalle y la comunicación con el microservicio de productos.
+
+![alt Objetivo_2](../images/Objetivo_2.png)
+
 ## Creación de proyecto
 
 En la carpeta `03-Products-App` se ha creado el microservicio, de la siguiente forma:
