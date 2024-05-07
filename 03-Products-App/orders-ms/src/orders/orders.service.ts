@@ -13,7 +13,8 @@ import {
   OrderPaginationDto,
 } from './dto';
 import { PRODUCT_SERVICE } from 'src/config';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
+import { SourceTextModule } from 'vm';
 
 @Injectable()
 export class OrdersService extends PrismaClient implements OnModuleInit {
@@ -140,6 +141,16 @@ export class OrdersService extends PrismaClient implements OnModuleInit {
   async findOne(id: string) {
     const order = await this.order.findFirst({
       where: { id },
+      // Para que incluya las relaciones
+      include: {
+        OrderItem: {
+          select: {
+            price: true,
+            quantity: true,
+            productId: true,
+          },
+        },
+      },
     });
 
     if (!order) {
@@ -149,7 +160,22 @@ export class OrdersService extends PrismaClient implements OnModuleInit {
       });
     }
 
-    return order;
+    const productIds = order.OrderItem.map((orderItem) => orderItem.productId);
+
+    const products: any[] = await firstValueFrom(
+      this.productsClient.send({ cmd: 'VALIDATE_PRODUCTS' }, productIds),
+    );
+
+    // De esa orden, cogemos todos los ids de los productos y traemos la
+    // información que queramos del microservicio products-ms
+    return {
+      ...order,
+      OrderItem: order.OrderItem.map((orderItem) => ({
+        ...orderItem,
+        name: products.find((product) => product.id === orderItem.productId)
+          .name,
+      })),
+    };
   }
 
   async changeStatus(changeOrderStatusDto: ChangeOrderStatusDto) {
