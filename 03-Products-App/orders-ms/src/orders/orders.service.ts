@@ -31,21 +31,83 @@ export class OrdersService extends PrismaClient implements OnModuleInit {
   }
 
   async create(createOrderDto: CreateOrderDto) {
-    const ids = [5, 6];
+    try {
+      // 1. Confirmar los ids de los productos
+      const productIds = createOrderDto.items.map((item) => item.productId);
 
-    // Para transformar este Observable en una promesa usamos firstValueFrom
-    const products = await firstValueFrom(
-      this.productsClient.send({ cmd: 'VALIDATE_PRODUCTS' }, ids),
-    );
+      // Para transformar este Observable en una promesa usamos firstValueFrom
+      const products: any[] = await firstValueFrom(
+        this.productsClient.send({ cmd: 'VALIDATE_PRODUCTS' }, productIds),
+      );
 
-    return products;
+      // 2. Cálculos de los valores
+      const totalAmount = createOrderDto.items.reduce((acum, orderItem) => {
+        // Yo no confío en el precio que me está mandando el cliente/gateway. Yo lo cojo de mi tabla de productos.
+        const price = products.find(
+          (product) => product.id === orderItem.productId,
+        ).price;
 
-    // return {
-    //   service: 'Orders Microservice',
-    //   createOrderDto: createOrderDto,
-    // };
+        return price * orderItem.quantity + acum;
+      }, 0);
 
-    // return this.order.create({ data: createOrderDto });
+      const totalItems = createOrderDto.items.reduce((acum, orderItem) => {
+        return acum + orderItem.quantity;
+      }, 0);
+
+      // 3. Crear una transacción de BD
+      //    Necesitamos crear la orden y sus items, y ambas deben ser exitosas. Si una falla hay que
+      //    hacer un rollback.
+      //    Una forma de hacerlo sería usando this.$transaction()
+      //    Pero en este caso no hace falta porque podemos hacer todo en una sola sentencia create.
+      const order = await this.order.create({
+        data: {
+          totalAmount: totalAmount,
+          totalItems: totalItems,
+          // Parte del detalle
+          OrderItem: {
+            createMany: {
+              data: createOrderDto.items.map((orderItem) => ({
+                price: products.find(
+                  (product) => product.id === orderItem.productId,
+                ).price,
+                productId: orderItem.productId,
+                quantity: orderItem.quantity,
+              })),
+            },
+          },
+        },
+
+        // Para que regrese todos los valores de OrderItem.
+        include: {
+          // Esto sería para que regrese todo.
+          // OrderItem: true,
+          //
+          // Y esto para que regrese los campos que realmente quiero.
+          OrderItem: {
+            select: {
+              price: true,
+              quantity: true,
+              productId: true,
+            },
+          },
+        },
+      });
+
+      // Vamos a devolver también el nombre del producto.
+      return {
+        ...order,
+        OrderItem: order.OrderItem.map((orderItem) => ({
+          ...orderItem,
+          name: products.find((product) => product.id === orderItem.productId)
+            .name,
+        })),
+      };
+    } catch (error) {
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Check logs',
+      });
+    }
   }
 
   async findAll(orderPaginationDto: OrderPaginationDto) {

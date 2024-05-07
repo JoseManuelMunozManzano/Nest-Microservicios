@@ -288,6 +288,10 @@ export const PRODUCT_SERVICE = 'PRODUCT_SERVICE';
 
 Para confirmar que todo esto funciona, es nuestro service `orders.service.ts` añadimos un constructor y modificamos el método `create()`
 
+### Grabar Orden y Detalle en BD
+
+Tenemos que hacer las modificaciones en nuestro service `orders.service.ts`.
+
 ## Testing
 
 - Clonar el repositorio
