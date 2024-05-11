@@ -55,6 +55,41 @@ El microservicio Órdenes está suscrito a escuchar la petición de creación de
 
 Ver [Presentación PDF](../Documentacion/microservicios.pdf) desde la página 50 a la 55 para ver la presentación PDF de NATS.
 
+## Continuación de la aplicación
+
+Recordar que queremos pasar de una estructura con comunicación por TCP a una comunicación mediante NATS.
+
+## Levantar servidor de NATS
+
+Documentación:
+
+- https://nats.io/
+  - Ver el video de 8 minutos: https://www.youtube.com/watch?v=hjXIUPZ7ArM&t=9s
+- https://hub.docker.com/_/nats
+
+Para evitar instalar NATS de forma física en el equipo, vamos a usar la imagen oficinal de NATS de DockerHub (segundo enlace de la documentación)
+
+Primero lo vamos a echar a andar de forma rápida y luego lo haremos con Docker Compose, en nuestra futura red de Docker, para no tener que memorizar el comando.
+
+En la Raspberry Pi ejecuto:
+
+```
+docker run -d --name nats-server -p 4222:4222 -p 8222:8222 nats
+```
+
+Este comando aparece en DockerHub y, sobre los puertos, explica:
+
+```
+# Each server exposes multiple ports
+# 4222 is for clients.
+# 8222 is an HTTP management port for information reporting.
+# 6222 is a routing port for clustering (No lo usamos)
+```
+
+Para probar, acceder con el navegador a la ruta: `http://192.168.1.41:8222/`
+
+Pulsamos en Connections, pero no veremos ninguna conexión. Conforme nuestros microservicios y el gateway se vayan conectando, irán apareciendo.
+
 ## Testing
 
 En cada proyecto aparece un apartado de testing, pero si es importante tener siempre levantado, como mínimo, el proyecto `client-gateway`, que es el que se comunica con los microservicios, y al menos un microservicio, para poder probar algo.
@@ -64,3 +99,7 @@ Llegado al objetivo 2, ya es obligatorio levantar todo:
 - Levantar de manera independiente el proyecto client-gateway usando Peacock para diferenciar el espacio de trabajo: `npm run start:dev`
 - Levantar de manera independiente el proyecto products-ms usando también Peacock para diferenciar el espacio de trabajo: `npm run start:dev`
 - Levantar de manera independiente el proyecto orders-ms usando también Peacock para diferenciar el espacio de trabajo: `npm run start:dev`
+  - Levantar la base de datos en Raspberry Pi
+    - Ir a la ruta `/home/pi/docker/postgresql/orders-ms` y ejecutar `docker compose up -d`
+
+Nats: `docker run -d --name nats-server -p 4222:4222 -p 8222:8222 nats`
