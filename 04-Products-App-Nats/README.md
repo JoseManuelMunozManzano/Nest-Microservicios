@@ -90,6 +90,10 @@ Para probar, acceder con el navegador a la ruta: `http://192.168.1.41:8222/`
 
 Pulsamos en Connections, pero no veremos ninguna conexión. Conforme nuestros microservicios y el gateway se vayan conectando, irán apareciendo.
 
+## Cambiar de TCP a NATS
+
+Documentación: https://docs.nestjs.com/microservices/nats
+
 ## Testing
 
 En cada proyecto aparece un apartado de testing, pero si es importante tener siempre levantado, como mínimo, el proyecto `client-gateway`, que es el que se comunica con los microservicios, y al menos un microservicio, para poder probar algo.

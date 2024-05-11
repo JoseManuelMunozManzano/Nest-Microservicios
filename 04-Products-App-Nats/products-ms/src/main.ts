@@ -7,15 +7,17 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 async function bootstrap() {
   const logger = new Logger('Main');
 
-  // Transformación a Microservicio
+  console.log(envs.natsServers);
+
+  // Transformación a Microservicio, usando NATS
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: Transport.TCP,
+      transport: Transport.NATS,
       options: {
-        port: envs.port, // Mandamos el puerto en las opciones
-        // Si queremos llevar los microservices a otro servidor distinto al gateway
-        // host: '::',
+        // servers es un arreglo, pero como envs.natsServer ya es un arreglo, no hace
+        // falta indicar los corchetes.
+        servers: envs.natsServers,
       },
     },
   );
