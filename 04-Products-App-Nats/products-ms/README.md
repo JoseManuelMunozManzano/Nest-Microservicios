@@ -14,8 +14,6 @@ Modificamos, por tanto, `main.ts`, `.env`, `.env.template` y `envs.ts`.
 
 En nuestro fuente `products.controller`, los `@MessagePattern({ cmd: ProductTCP.CREATE })` como objeto van a funcionar, pero NATS pide un string.
 
-Una vez hechos estos cambios veremos que las peticiones, en Postman, no funcionan. Esto es porque no tenemos este canal de comunicación en nuestro Gateway. Lo tenemos que cambiar, a NATS, en el Gateway también.
-
 ## Testing
 
 - Clonar el repositorio
