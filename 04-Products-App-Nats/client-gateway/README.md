@@ -22,6 +22,30 @@ Mirar que ya no vamos directamente desde nuestro Gateway al microservicio de Pro
 
 Y, si vamos al navegador, a la ruta `http://192.168.1.41:8222/connz`, veremos dos clientes conectados, nuestro Gateway y el microservicio de Productos.
 
+## NatsModule - Módulo Personalizado
+
+Vamos a realizar una refactorización.
+
+Vamos a agrupar la conexión y configuración de nuestro NATS Server a un módulo personalizado.
+
+Es esta parte la que vamos a refactorizar:
+
+```
+ClientsModule.register([
+  {
+    name: NATS_SERVICE,
+    transport: Transport.NATS,
+    options: {
+      servers: envs.natsServers,
+    },
+  },
+]),
+```
+
+Para eso, usaremos nuestro Nest CLI. En la terminal escribimos: `nest g mo nats`
+
+Se creará una carpeta `nats` que vamos a renombrar a `transports` por si el día de mañana tenemos distintos tipos de transporte, como gRPG... y un módulo `nats.module.ts` que dejamos tal cual. Si el día de mañana tenemos otros transportes, solo crearemos los distintos módulos de transporte.
+
 ## Testing
 
 - Clonar el repositorio
