@@ -10,9 +10,11 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: Transport.TCP,
+      transport: Transport.NATS,
       options: {
-        port: envs.port,
+        // servers es un arreglo, pero como envs.natsServer ya es un arreglo, no hace
+        // falta indicar los corchetes.
+        servers: envs.natsServers,
       },
     },
   );

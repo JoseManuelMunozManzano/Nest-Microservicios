@@ -12,11 +12,13 @@ Hacemos la instalación en el microservicio products-ms: `npm i nats`
 
 Para hacer la configuración vamos a hacer un módulo personalizado que nos sirva para hacer la importación fácilmente, y tenerlo centralizado en un único lugar.
 
-Tocamos los fuentes `config/services.ts`, `.env`, `.env.template`, `config/envs.ts`, `products/products.module.ts` y `products/products.controller.ts`.
+Tocamos los fuentes `config/services.ts`, `.env`, `.env.template`, `config/envs.ts`.
 
-Para que nos funcione por ahora, comentamos las options de la configuración del ClientsModule en `orders/orders.module.ts`.
+Para productos, modificamos `products/products.module.ts` y `products/products.controller.ts`.
 
-Con esto, ya funcionan las peticiones de productos desde Postman.
+Para órdenes, modificamos `orders/orders.module.ts` y `orders/orders.controller.ts`.
+
+Con esto, ya funcionan las peticiones de productos y órdenes desde Postman.
 
 Mirar que ya no vamos directamente desde nuestro Gateway al microservicio de Productos, sino desde el Gateway al servidor de NATS, y de este al microservicio de Productos.
 
