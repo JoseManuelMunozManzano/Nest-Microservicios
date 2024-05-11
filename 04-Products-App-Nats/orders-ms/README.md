@@ -21,6 +21,7 @@ Copiamos desde nuestro `client-gateway` la carpeta `transports` a nuestro micros
 - Clonar el repositorio
 - Instalar dependencias
 - Crear un archivo `.env` basado en `env.template`
+- Levantar el servidor de NATS: `docker run -d --name nats-server -p 4222:4222 -p 8222:8222 nats`
 - Levantar la base de datos en Raspberry Pi
   - Ir a la ruta `/home/pi/docker/postgresql/orders-ms` y ejecutar `docker compose up -d`
 - Ejecutar migración de Prisma `npx prisma migrate dev`

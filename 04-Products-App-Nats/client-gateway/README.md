@@ -52,6 +52,8 @@ Se creará una carpeta `nats` que vamos a renombrar a `transports` por si el dí
 
 - Clonar el repositorio
 - Instalar dependencias
+- Crear un archivo `.env` basado en `env.template`
+- Levantar el servidor de NATS: `docker run -d --name nats-server -p 4222:4222 -p 8222:8222 nats`
 - Ejecutar `npm run start:dev`
 - Levantar de manera independiente el proyecto products-ms usando también Peacock para diferenciar el espacio de trabajo: `npm run start:dev`
 - Levantar de manera independiente el proyecto orders-ms usando también Peacock para diferenciar el espacio de trabajo: `npm run start:dev`

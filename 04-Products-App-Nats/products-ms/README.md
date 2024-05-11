@@ -19,6 +19,7 @@ En nuestro fuente `products.controller`, los `@MessagePattern({ cmd: ProductTCP.
 - Clonar el repositorio
 - Instalar dependencias
 - Crear un archivo `.env` basado en `env.template`
+- Levantar el servidor de NATS: `docker run -d --name nats-server -p 4222:4222 -p 8222:8222 nats`
 - Ejecutar migración de Prisma `npx prisma migrate dev`
 - Ejecutar `npm run start:dev`
 

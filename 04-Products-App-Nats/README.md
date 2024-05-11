@@ -94,16 +94,31 @@ Pulsamos en Connections, pero no veremos ninguna conexión. Conforme nuestros mi
 
 Documentación: https://docs.nestjs.com/microservices/nats
 
+## Docker Network - Problema y Necesidad
+
+Ya tenemos nuestra app funcionando. Tenemos NATS, tenemos BD PostgreSQL y SQLite...
+
+Esto significa que tenemos un montón de terminales ejecutando el gateway, las orders y los products. Además tenemos que acordarnos de echar a andar Docker y ejecutar los contenedores del servidor NATS y de la BD PostgreSQL.
+
+Esto es un poco complicado.
+
+Además, asumamos que vamos a realizar una nueva funcionalidad que va a requerir que toquemos tanto el Gateway como nuestros microservicios. Esto hará que tengamos que levantarlos todos, y es tedioso tener que estar bajando todos los servicios y volver a levantarlos.
+
+Lo que vamos a hacer en la siguiente sección es pasar al objetivo 4.
+
+![alt Objetivo_4](./images/Objetivo_4.png)
+
+Esta configuración nos va a permitir crearnos una red que se va a encargar de realizar la comunicación directamente con nuestros servidores, y a la vez, mediante un solo comando, poder crear toda esta infraestructura (la parte del recuadro), asegurándome de que todo se levanta.
+
+También vamos a crear en todo el proyecto `Products-App` un `monorepo`, que no es más que un repositorio que tiene varios repositorios de nuestra aplicación.
+
+Nest nos ofrece una forma de hacerlo, pero deja todo bastante acoplado y difícil de leer y de mantener.
+
 ## Testing
 
-En cada proyecto aparece un apartado de testing, pero si es importante tener siempre levantado, como mínimo, el proyecto `client-gateway`, que es el que se comunica con los microservicios, y al menos un microservicio, para poder probar algo.
-
-Llegado al objetivo 2, ya es obligatorio levantar todo:
-
+- Levantar el servidor de NATS: `docker run -d --name nats-server -p 4222:4222 -p 8222:8222 nats`
 - Levantar de manera independiente el proyecto client-gateway usando Peacock para diferenciar el espacio de trabajo: `npm run start:dev`
 - Levantar de manera independiente el proyecto products-ms usando también Peacock para diferenciar el espacio de trabajo: `npm run start:dev`
 - Levantar de manera independiente el proyecto orders-ms usando también Peacock para diferenciar el espacio de trabajo: `npm run start:dev`
   - Levantar la base de datos en Raspberry Pi
     - Ir a la ruta `/home/pi/docker/postgresql/orders-ms` y ejecutar `docker compose up -d`
-
-Nats: `docker run -d --name nats-server -p 4222:4222 -p 8222:8222 nats`
