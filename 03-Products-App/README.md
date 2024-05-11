@@ -30,7 +30,7 @@ Todavía no, pero si el proyecto sigue creciendo, llega un punto donde vamos a p
 
 El problema es, por ejemplo, si queremos que tras una transacción o un evento, queremos notificar a dos o tres microservicios de manera simultanea. Esto puede acabar siendo un follón.
 
-Una cosa que ayuda muchísimo es utilizar lo que se llama un Service Broker, un midddleman que se encarga de procesar todo ese montón de paquetes y pedidos entre microservicios.
+Una cosa que ayuda muchísimo es utilizar lo que se llama un Service Broker, un middleman que se encarga de procesar todo ese montón de paquetes y pedidos entre microservicios.
 
 Con todo esto, vamos a transformar nuestra estructura actual de microservicios al Objetivo 3.
 
