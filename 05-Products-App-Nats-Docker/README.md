@@ -38,6 +38,17 @@ E, igualmente, modificamos nuestro `docker-compose.yml`. Podemos ver que el puer
 
 IMPORTANTE: En `environment`, en `NATS_SERVER`, hay que indicar correctamente el nombre del host. Cuando estamos trabajando en una red de Docker, se crea un DNS automático. Entonces, ¿cuál es el nombre del servidor de NATS dentro de la red de Docker? Es el nombre del servicio que hemos indicado en nuestro fichero `docker-compose.yml`, en este caso, `nats-server`.
 
+## Docker Compose Build ¿qué pasa?
+
+Si nosotros no tuviéramos la BD ni las migraciones de Prisma en el microservicio `products-ms` tendríamos un problema. Dentro de ese microservicio tenemos el fichero `dockerfile` donde estamos construyendo la imagen, y necesitamos el esquema de Prisma para ejecutarlo. El comando `RUN npx prisma generate` es útil si la BD ya está creada. Podemos añadir antes el comando `RUN npx prisma migrate dev`.
+
+Con la BD de PostgreSQL que tenemos en el microservicio `orders-ms` vamos a tener un problema, y es que no va a estar levantada la BD para el momento de hacer la migración por lo que no podemos añadir el migrate. Tampoco va a funcionar con problemas de la vida real.
+
+Solución:
+
+- En el fichero `dockerfile` del microservicio `products-ms` quitamos la generación de prisma
+- En el fichero docker-compose.yml, en el service `products-ms` tenemos que tener creada la BD antes de ejecutar la parte del `command`. Nos vamos a nuestro `package.json` de ese microservicio y creamos un nuevo script `docker:start` donde indicamos los comandos que nos permiten construir la BD basado en nuestro esquema de Prisma. También modificado el script `start:dev` para que ejecute este nuevo script `docker:start`. De esta manera, antes de ejecutar la app siempre generará la BD dentro del contenedor. Esto significa que las altas y actualizaciones no se verán reflejadas en la data, ya que van a afectar al proyecto local, no al contenedor, porque en el fichero `dockerfile` hacemos una copia de todo, usando el comando `COPY . .`, exceptuando lo que está en el bind volume, es decir, tenemos enlazado por el volume que indica el fichero `docker-compose.yml` la carpeta `./client-gateway/src` pero la BD no está ahí
+
 ## Testing
 
 Para levantar de forma manual:
@@ -52,5 +63,7 @@ Para levantar de forma manual:
 Para levantar con Docker y ejecutarlo en un host remoto (mi Raspberry Pi) ir a la ruta donde esta el fichero docker-compose.yml y ejecutar: `docker compose up --build`
 
 Usando `--build` porque lo vamos a construir.
+
+Si queremos bajarlo ejecutaremos `docker compose down`.
 
 IMPORTANTE: Estoy usando `docker context` y he añadido a mi context el docker que tengo en mi Raspberry Pi. Pero, como esto no ha funcionado, al final he instalado en VSCode el paquete `Remote Development`, me he llevado el proyecto a la Raspberry Pi y estoy codificando en remoto.
