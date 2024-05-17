@@ -20,6 +20,24 @@ También, dentro del proyecto `client-gateway` vamos a crear, en su raiz, un arc
 
 También copiamos el fichero `.dockerignore` que hemos creado antes, a la raiz de los proyectos `client-gateway`, `orders-ms` y `products-ms`.
 
+## Añadir NATS Server y Products Microservice
+
+Modificamos `docker-compose.yml` para levantar nuestro NATS Server.
+
+Aunque indicamos como `image: nats:latest` para producción debemos indicar etiquetas específicas, porque puede ser que la última versión sea incompatible. Subiremos las versiones manualmente.
+
+De los puertos indicados, solo me interesa el `8222`, porque ese es el puerto que se usa a nivel interno de aplicación. Los otros puertos que aparecen en la documentación se usan para hablar con el mundo exterior, pero yo tengo toda mi aplicación junta en el mismo contenedor, con lo que no me hacen falta.
+
+Indicar que en Docker he eliminado el container y la imagen de NATS que estaba sola.
+
+Ahora ya podemos indicar la siguiente imagen del contenedor, la de productos.
+
+Necesitamos copiar el fichero `dockerfile` que tenemos en `client-gateway` a `products-ms`. Solo hay que modificarlo para añadir `Prisma`.
+
+E, igualmente, modificamos nuestro `docker-compose.yml`. Podemos ver que el puerto podría seguir siendo el 3000. Esto funciona porque cada servicio es como una máquina virtual independiente. Además, el puerto solo se usa para exponer la aplicación como tal al mundo exterior, pero la comunicación entre ellos no sucede por el puerto 3000, sino por Nats. Lo que hacemos, igualmente, es poner el puerto 3001, pero esto es para que alguien desde el mundo exterior se pueda conectar.
+
+IMPORTANTE: En `environment`, en `NATS_SERVER`, hay que indicar correctamente el nombre del host. Cuando estamos trabajando en una red de Docker, se crea un DNS automático. Entonces, ¿cuál es el nombre del servidor de NATS dentro de la red de Docker? Es el nombre del servicio que hemos indicado en nuestro fichero `docker-compose.yml`, en este caso, `nats-server`.
+
 ## Testing
 
 Para levantar de forma manual:
