@@ -49,6 +49,12 @@ Solución:
 - En el fichero `dockerfile` del microservicio `products-ms` quitamos la generación de prisma
 - En el fichero docker-compose.yml, en el service `products-ms` tenemos que tener creada la BD antes de ejecutar la parte del `command`. Nos vamos a nuestro `package.json` de ese microservicio y creamos un nuevo script `docker:start` donde indicamos los comandos que nos permiten construir la BD basado en nuestro esquema de Prisma. También modificado el script `start:dev` para que ejecute este nuevo script `docker:start`. De esta manera, antes de ejecutar la app siempre generará la BD dentro del contenedor. Esto significa que las altas y actualizaciones no se verán reflejadas en la data, ya que van a afectar al proyecto local, no al contenedor, porque en el fichero `dockerfile` hacemos una copia de todo, usando el comando `COPY . .`, exceptuando lo que está en el bind volume, es decir, tenemos enlazado por el volume que indica el fichero `docker-compose.yml` la carpeta `./client-gateway/src` pero la BD no está ahí
 
+## Configurar Orders Microservice y PostgreSql
+
+Modificamos el fichero `docker-compose.yml`, creándonos dos grupos, `orders-ms` y `orders-db`.
+
+Dentro del microservicio `orders-ms` modificamos el fichero `package.json` y creamos el fichero `dockerfile` copiándolo del microservicio `products-ms`.
+
 ## Testing
 
 Para levantar de forma manual:
