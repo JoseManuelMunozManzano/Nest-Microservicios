@@ -1,18 +1,17 @@
 version: '3'
 
 services:
-
   nats-server:
     image: nats:latest
     ports:
-      - "8222:8222"
+      - '8222:8222'
 
   client-gateway:
     build: ./client-gateway
     ports:
-      - "3000:3000"
-    volumes:
-      - ./client-gateway/src:/usr/src/app/src
+      - '3000:3000'
+    # volumes:
+    #   - ./client-gateway/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - PORT=3000
@@ -20,8 +19,8 @@ services:
 
   products-ms:
     build: ./products-ms
-    volumes:
-      - ./products-ms/src:/usr/src/app/src
+    # volumes:
+    #   - ./products-ms/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - PORT=3001
@@ -33,8 +32,8 @@ services:
     depends_on:
       - orders-db
     build: ./orders-ms
-    volumes:
-      - ./orders-ms/src:/usr/src/app/src
+    # volumes:
+    #   - ./orders-ms/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - PORT=3002
@@ -47,7 +46,7 @@ services:
     image: postgres:16.2
     restart: always
     volumes:
-      - /home/pi/docker/postgresql/orders-ms/postgres:/var/lib/postgresql/data
+      - /home/pi/docker/postgresql/postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
     environment:
