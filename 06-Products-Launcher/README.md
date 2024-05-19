@@ -61,6 +61,8 @@ Además, comenté el `bind volume` y es también necesario que esté funcionando
 
 Para subir esto y que sea parte de mi repositorio, en VSCode, si vamos a ver los cambios pendientes, veremos que aparece la referencia a dos repositorios independientes, nuestro `product-launcher` y nuestro `client-gateway`. Hay que tener mucho cuidado a la hora de actualizar el `product-launcher` porque es muy fácil caer en un punto donde tengamos que hacer un `rebase` o resolver conflictos.
 
+Dejamos `docker-compose.yml` descomentado y subimos los otros sub-módulos.
+
 ## Importante
 
 Si se trabaja en el repositorio que tiene los sub-módulos, **primero actualizar y hacer push** en el sub-módulo y **después** en el repositorio principal.
