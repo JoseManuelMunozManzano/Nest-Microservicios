@@ -90,6 +90,24 @@ También modificamos dentro del mismo proyecto `client-gateway`, dentro de `src/
 
 Añadimos un listener en `rpc-custom-exception.filter.ts` para que aparezca un mensaje mejor personalizado.
 
+## Monorepo o no monorepo
+
+Un monorepo son un motón de proyectos que viven dentro del mismo repositorio.
+
+Los monorepos son muy útiles cuando tenemos muchos proyectos que comparten código, porque podemos tener todo en un solo lugar, lo que se traduce en que nos facilita el mantenimiento, y además la colaboración.
+
+Otra ventaja es que se pueden hacer cambios en varios microservicios a la vez y asegurarnos de que todo sigue funcionando bien juntos.
+
+Pero también tienen sus desventajas, por ejemplo, las más importantes son que pueden ser más difíciles de manejar, porque son más grandes, y pueden tener más conflictos al momento de hacer un merge.
+
+Además, si no estamos pendientes, podemos terminar con un montón de código que no tiene nada que ver en el mismo repositorio, lo que hará que sea más difícil encontrar lo que necesitamos.
+
+En Github, yo estoy subiendo todo como un monorepo para el curso, pero para Bitbucket lo voy a manejar como repositorios independientes, porque me va a facilitar el pipeline de producción, ya que un commit va a estar asociado a un repositorio como tal.
+
+Pero ahora tenemos un problema. Tenemos nuestro `docker-compose.yml` que toma todos los repositorios y los levanta, y funciona bien. El problema aparece al pensar donde vamos a colocar este código, en qué repositorio, ya que es muy importante porque `docker-compose.yml` nos dice como vamos a echar a andar todos nuestros repositorios, y como se conectan entre sí.
+
+Vamos a crear lo que se conoce como `Git Submodules` que es un repositorio en el que se indica que una carpeta apunta a otro repositorio afuera.
+
 ## Testing
 
 1. Clonar el repositorio
