@@ -55,7 +55,25 @@ Modificamos el fichero `docker-compose.yml`, creándonos dos grupos, `orders-ms`
 
 Dentro del microservicio `orders-ms` modificamos el fichero `package.json` y creamos el fichero `dockerfile` copiándolo del microservicio `products-ms`.
 
+## Variables de entorno
+
+En producción no deberíamos poder acceder a la BD de PostgreSQL. Por tanto, para producción vamos a querer modificar docker-compose.yml para comentar el ports del service `Orders DB`. Con esto, desde Squirrel ya no vamos a poder acceder a la BD, pero si desde Postman. Lo que tendremos será una BD con una cadena de conexión que apunte a otro lugar.
+
+Pero en desarrollo si nos viene bien indicar el ports.
+
+Vamos a crear una mini-red encapsulada para que sus servicios puedan comunicarse entre sí, basada en los nombres de los services de docker-compose.yml.
+
+Pero lo que vamos a hacer ahora es lo que indicar el título, que es crear variables de entorno.
+
+En el root, carpeta `05-Products-App-Nats-Docker` creamos un archivo `.env` y su clon `.env.template`. Hay que tener mucho cuidado con el nombre de las variables que se indiquen, para que sean significativas.
+
+Y modificamos `docker-compose.yml`, service `client-gateway` para indicar esa variable en la parte del puerto de mi computadora.
+
 ## Testing
+
+1. Clonar el repositorio
+2. Crear un .env basado en el .env.template
+3. Para levantar, hay dos opciones, manual y don Docker
 
 Para levantar de forma manual:
 

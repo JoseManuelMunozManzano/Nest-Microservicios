@@ -4,12 +4,12 @@ services:
   nats-server:
     image: nats:latest
     ports:
-      - '8222:8222'
+      - 8222:8222
 
   client-gateway:
     build: ./client-gateway
     ports:
-      - '3000:3000'
+      - ${CLIENT_GATEWAY_PORT}:3000
     # volumes:
     #   - ./client-gateway/src:/usr/src/app/src
     command: npm run start:dev
