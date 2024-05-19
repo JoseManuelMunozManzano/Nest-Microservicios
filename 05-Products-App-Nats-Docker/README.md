@@ -108,6 +108,26 @@ Pero ahora tenemos un problema. Tenemos nuestro `docker-compose.yml` que toma to
 
 Vamos a crear lo que se conoce como `Git Submodules` que es un repositorio en el que se indica que una carpeta apunta a otro repositorio afuera.
 
+## Git SubModules
+
+Configurar y crear sub-módulos en Git: https://gist.github.com/JoseManuelMunozManzano/fd5e4a0759d82542ba9c4444b71fad9f
+
+La parte de GitHub la cambio por BitBucket.
+
+Estos archivos:
+
+- .dockerignore
+- .env
+- .env.template
+- docker-compose.yml
+- README.md
+
+Los tenemos en el root del proyecto `05-Products-App-Nats-Docker` que engloba todos nuestros proyectos de microservicios.
+
+Voy a crear un nuevo repositorio que va a contener solo esos archivos (menos .env) y los proyectos `client-gateway`, `orders-ms` y `products-ms` van a ser referencias (no código fuente) a los repositorios que ya tengo creados en BitBucket.
+
+Creamos dentro del curso, pero fuera de `05-Products-App-Nats-Docker` la carpeta `06-Products-Launcher` y copiamos dentro los archivos indicados arriba. Toda esta nueva carpeta y lo que se hace, puede verse en mi BitButcket `https://bitbucket.org/neimerc/workspace/projects/PROD`.
+
 ## Testing
 
 1. Clonar el repositorio
