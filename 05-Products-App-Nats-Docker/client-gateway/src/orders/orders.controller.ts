@@ -26,8 +26,15 @@ export class OrdersController {
 
   // OrderPaginationDto es un extends de nuestro PaginationDto, al que se le añade el status
   @Get()
-  findAll(@Query() orderPaginationDto: OrderPaginationDto) {
-    return this.client.send('findAllOrders', orderPaginationDto);
+  async findAll(@Query() orderPaginationDto: OrderPaginationDto) {
+    try {
+      const orders = await firstValueFrom(
+        this.client.send('findAllOrders', orderPaginationDto),
+      );
+      return orders;
+    } catch (error) {
+      throw new RpcException(error);
+    }
   }
 
   // Se añade a la ruta id/ para que no colisione con el método findAllByStatus() de abajo

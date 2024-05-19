@@ -69,6 +69,27 @@ En el root, carpeta `05-Products-App-Nats-Docker` creamos un archivo `.env` y su
 
 Y modificamos `docker-compose.yml`, service `client-gateway` para indicar esa variable en la parte del puerto de mi computadora.
 
+## Expandir nuestro custom exception filter
+
+Supongamos que hay un servicio que se cae (que no sea el gateway), por ejemplo nuestro `orders-ms`. No vamos a poder obtener las órdenes, pero los productos si van a seguir funcionando.
+
+Cuando ejecutamos el obtener las órdenes desde Postman, obtenemos un `Internal server error` y el error es un `Empty response`, es decir, no hay nadie escuchando el mensaje `findAllOrders`.
+
+Vamos a centralizar todo lo que está relacionado a nuestra excepción.
+
+Nos vamos al proyecto `client-gateway` y dentro a `src/common/exceptions`, archivo `rpc-custom-exception.filter.ts`.
+
+También modificamos dentro del mismo proyecto `client-gateway`, dentro de `src/orders` el controller `orders.controller.ts`, en concreto el método `orderPaginationDto` para hacer un `try...catch` en vez de un observable. Esto es porque los demás métodos lo hacen también con `try...catch`. Además, así ahora el error que devuelve Postman es el que maneja nuestro exception filter, pero no hay mensaje:
+
+```
+{
+    "status": 400,
+    "message": {}
+}
+```
+
+Añadimos un listener en `rpc-custom-exception.filter.ts` para que aparezca un mensaje mejor personalizado.
+
 ## Testing
 
 1. Clonar el repositorio

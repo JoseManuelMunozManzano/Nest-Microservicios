@@ -13,6 +13,22 @@ export class RpcCustomExceptionFilter implements ExceptionFilter {
     // Personalizamos la respuesta que enviamos al front basado en la excepción.
     const rpcError = exception.getError();
 
+    // Lo hemos puesto para ver que tipo de error obtenemos cuando se cae un servicio (no el gateway)
+    // Vemos que es un EmptyResponseException
+    console.log(rpcError);
+
+    // Como no podemos tomar la instancia de ese tipo de Excepción, hacemos lo siguiente.
+    // Esto es porque el mensaje de error del console.log(rpcError) nos devuelve: EmptyResponseException [Error]: Empty response.
+    // No devolvemos al usuario información que no le compete, en este caso no devolvemos el nombre ("findAllOrders")
+    if (rpcError.toString().includes('Empty response')) {
+      return response.status(500).json({
+        status: 500,
+        message: rpcError
+          .toString()
+          .substring(0, rpcError.toString().indexOf('(') - 1),
+      });
+    }
+
     // La excepción debe ser un objeto y esperamos que vengan ciertas propiedades, status y message.
     if (
       typeof rpcError === 'object' &&
