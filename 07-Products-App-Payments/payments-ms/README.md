@@ -13,6 +13,19 @@ Para crear el proyecto, que todavía no es un microservicio, sino un proyecto RE
 - Creamos en la raiz los archivos `.env` y `.env.template`
 - Añadimos al fichero `.gitignore` el texto `.env` para que no lo pase a GitHub
 
+## Creación de RESTFul API Endpoints
+
+En la terminal ejecutamos: `nest g res payments --no-spec`
+
+Seleccionamos `REST API` y a la pregunta sobre si crea los CRUD entry points seleccinamos `n`. Esto crea los fuentes:
+
+- payments.controller.ts
+- payments.module.ts
+- payments.service.ts
+
+En `payments.controller.ts` nos definimos los endpoints.
+
 ## Testing
 
 - Ejecutar con el comando: `npm run start:dev`
+- En la carpeta `postman` se ha dejado un ejemplo de llamada desde Postman
