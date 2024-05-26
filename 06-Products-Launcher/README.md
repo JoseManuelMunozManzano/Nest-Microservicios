@@ -63,6 +63,20 @@ Para subir esto y que sea parte de mi repositorio, en VSCode, si vamos a ver los
 
 Dejamos `docker-compose.yml` descomentado y subimos los otros sub-módulos.
 
+## Trabajar basado en el Launcher
+
+Si tenemos que reconstruir el proyecto para poder seguir trabajando en una nueva feature basado en en launcher, estos son los pasos que debemos hacer:
+
+- Vamos a Bitbucket, al proyecto `Products-App`, repositorio `products-launcher`, y pulso en clonar. Copio la URL.
+  - `git clone https://Neimerc@bitbucket.org/neimerc/products-launcher.git`
+- Vamos a la carpeta donde querramos clonar el proyecto y pegamos ese comando
+- Abrimos el proyecto en VSCode
+- Crear un .env basasado en el .env.template
+- Si vemos las referencias de los repositorios, `client-gateway`, `orders-ms` y `products-ms`, veremos que están vacíos
+- Reconstruimos los submódulos con el comando `git submodule update --init --recursive`
+  - Este comando descarga el código fuente de cada uno de los submódulos
+- Ejecutar el comando `docker compose up --build`
+
 ## Importante
 
 Si se trabaja en el repositorio que tiene los sub-módulos, **primero actualizar y hacer push** en el sub-módulo y **después** en el repositorio principal.

@@ -19,3 +19,4 @@ En la carpeta `documentación` podemos ver un par de archivos PDF. Uno con los s
 - 05-Products-App-Nats-Docker
 - 06-Products-Launcher
   - Es el lanzador de productos, del proyecto 05-Products-App-Nats-Docker
+- 07-Products-App-Payments
