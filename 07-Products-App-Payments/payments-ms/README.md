@@ -46,6 +46,28 @@ Vamos a nuestra configuración `src/config/envs.ts` y añadimos nuestra nueva va
 
 Luego nos vamos al service `src/payments/payments.service.ts` y hacemos la configuración usando el SDK de Stripe.
 
+## Crear sesión de pago
+
+Desde nuestro controlador `src/payments/payments.controller.ts` método `createPaymentSession()` vamos a llamar a nuestro service con un método nuevo `createPaymentSession()`.
+
+Para probar, desde Postman ejecutamos el endpoint `Create Payment Session`.
+
+Al final de la respuesta veremos una url. Pulsamos `Cmd` y con el ratón hacemos click a esa URL. Se abrirá este tipo de ventana:
+
+![alt Ventana Pago Stripe](../images/Pago_Stripe.png)
+
+Yo he informado esos valores, pero cualquiera vale. Pulsamos `Pagar`.
+
+Veremos que redirecciona a la ruta `http://localhost:3003/payments/success`, indicada en `payments.service.ts`.
+
+Si ahora vuelvo al Dashboard de Stripe y pulso en Saldos y luego en Toda la actividad, veo:
+
+![alt Saldos Toda Actividad](../images/Saldos_Toda_Actividad.png)
+
+Y ya hemos hecho el cobro a esa persona con esa tarjeta de crédito.
+
+Recordar que todo esto es `FICTICIO`.
+
 ## Testing
 
 - Ejecutar con el comando: `npm run start:dev`
