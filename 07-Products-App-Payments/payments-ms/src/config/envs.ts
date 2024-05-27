@@ -5,12 +5,14 @@ import * as joi from 'joi';
 
 interface EnvVars {
   PORT: number;
+  STRIPE_SECRET: string;
 }
 
 // Validador de esquema
 const envsSchema = joi
   .object({
     PORT: joi.number().required(),
+    STRIPE_SECRET: joi.string().required(),
   })
   .unknown(true); // Esto se indica porque hay muchas variables de entorno en process.env y no queremos evaluarlas
 
@@ -24,4 +26,5 @@ const envVars: EnvVars = value;
 
 export const envs = {
   port: envVars.PORT,
+  stripeSecret: envVars.STRIPE_SECRET,
 };

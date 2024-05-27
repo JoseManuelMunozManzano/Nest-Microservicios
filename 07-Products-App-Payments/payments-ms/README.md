@@ -25,6 +25,27 @@ Seleccionamos `REST API` y a la pregunta sobre si crea los CRUD entry points sel
 
 En `payments.controller.ts` nos definimos los endpoints.
 
+## Configuración de Stripe
+
+https://stripe.com/es
+
+La idea es configurar y obtener nuestro Stripe Secret Key.
+
+- Entramos en nuestra cuenta de Stripe
+- Pulsamos en el botón `Desarrolladores`
+- Pulsamos la tab `Claves de API`
+- Cogemos la `clave de prueba` con la que vamos a identificar a mi backend
+- Creo una nueva variable de entorno en mi fichero `.env` y `.env.template` e indico la API KEY
+- En la página principal, pulsamos en el botón `Empezar a usar los pagos`, nos vamos a la tab `Herramientas para desarrolladores` y pulsamos en el cuadro `SDK y componentes de interfaz de usuario`
+  - https://docs.stripe.com/libraries
+  - Ahí tenemos el paquete que tenemos que instalar `npm install stripe` Lo instalamos
+- La documentación de la API de Stripe está en el icono de interrogación, arriba en la parte derecha (Developer docs)
+  - Ver, por ejemplo: https://docs.stripe.com/terminal/references/api/js-sdk
+
+Vamos a nuestra configuración `src/config/envs.ts` y añadimos nuestra nueva variable de entorno `STRIPE_SECRET`.
+
+Luego nos vamos al service `src/payments/payments.service.ts` y hacemos la configuración usando el SDK de Stripe.
+
 ## Testing
 
 - Ejecutar con el comando: `npm run start:dev`
