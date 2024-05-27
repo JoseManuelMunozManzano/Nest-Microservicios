@@ -68,6 +68,18 @@ Y ya hemos hecho el cobro a esa persona con esa tarjeta de crédito.
 
 Recordar que todo esto es `FICTICIO`.
 
+## Payment Session DTO
+
+Vamos a modificar `payments.service.ts` para no usar hardcode. La información va a estar basada en la que venga desde otro microservicio.
+
+En la carpeta `src/payments` creamos la carpeta `dto` y dentro el dto `payment-session.dto.ts`.
+
+Instalamos los paquetes: `npm i class-validator class-transformer`
+
+Hacemos la configuración de los global pipes en nuestro fichero `main.ts` y modificamos nuestro controller y nuestro service para recibir y trabajar con el dto.
+
+Para probar, desde Postman ejecutamos el endpoint `Create Payment Session`.
+
 ## Testing
 
 - Ejecutar con el comando: `npm run start:dev`
