@@ -80,6 +80,28 @@ Hacemos la configuración de los global pipes en nuestro fichero `main.ts` y mod
 
 Para probar, desde Postman ejecutamos el endpoint `Create Payment Session`.
 
+## Probando Webhooks de Stripe
+
+Esta parte es para que nos notifique Stripe de que hemos realizado el pago. No podemos fiarnos de la `success_url` o `cancel_url` que aparecen en `payments.service.ts` porque puede que el usuario pagara y cerrara el navegador web, por lo que nunca accederíamos a esos URLs.
+
+Vamos a usar Webhooks para enterarnos de que el usuario ha pagado.
+
+![alt Webhooks](../images/Stripe_Webhook.png)
+
+Vemos que es el mismo Stripe quien, mediante un POST, llama a nuestro Webhook, donde ya indicamos que se ha pagado algo. Es en nuestro Webhook donde hacemos la verificación de que proviene de Stripe, con su firma, y sí nosotros actualizamos la orden.
+
+En esta clase solo vamos a probar el endpoint que tenemos creado, `payments.controller.ts`, método `stripeWebhook()`.
+
+Para probar esto, en `Stripe`, en el `Dashboard` pulsamos en el botón `Desarrolladores` y luego `Webhooks`.
+
+Hay muchos webhooks en Stripe. Podemos saber cuando se crea un producto, cuando se borra, cuando se crea un intento de pago, cuando falla, cuando sale bien...
+
+Pulsamos en `Añadir un punto de conexión`. Hay dos formas, con el CLI `Probar en un entorno local`, o, de nuevo pulsando `Añadir un punto de conexión`.
+
+Ver este video `https://cursos.devtalles.com/courses/take/nestjs-microservicios/lessons/53497338-probando-webhooks-de-stripe` para hacerlo con el CLI. Yo prefiero no instalar nada más en mi ordenador y por eso no lo voy a hacer con el CLI.
+
+Tenemos que modificar `main.ts`, `payments.controller.ts` y `payments.service.ts`.
+
 ## Testing
 
 - Ejecutar con el comando: `npm run start:dev`
