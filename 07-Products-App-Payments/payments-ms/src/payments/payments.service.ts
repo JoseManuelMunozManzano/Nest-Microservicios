@@ -51,9 +51,11 @@ export class PaymentsService {
 
     let event: Stripe.Event;
 
-    // This is your Stripe CLI webhook secret for testing your endpoint locally.
-    const endpointSecret =
-      'whsec_b0854adf1e8be5504172a85020a91f8c4ee46f33a57b115da8e4987f41dacef7';
+    // Testing
+    // const endpointSecret = 'whsec_b0854adf1e8be5504172a85020a91f8c4ee46f33a57b115da8e4987f41dacef7';
+
+    // Real
+    const endpointSecret = envs.hookdeckSecret;
 
     try {
       event = this.stripe.webhooks.constructEvent(
@@ -67,6 +69,15 @@ export class PaymentsService {
     }
 
     console.log({ event });
+    switch (event.type) {
+      case 'charge.succeeded':
+        // TODO: Llamar nuestro microservicio
+        console.log({ event });
+        break;
+
+      default:
+        console.log(`Event ${event.type} not handled`);
+    }
 
     return res.status(200).json({ sig });
   }

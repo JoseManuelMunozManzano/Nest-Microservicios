@@ -106,9 +106,43 @@ Tenemos que modificar `main.ts`, `payments.controller.ts` y `payments.service.ts
 
 Continuamos desarrollando. El código se sigue cogiendo de `https://dashboard.stripe.com/test/webhooks/create?endpoint_location=hosted`
 
-En esa misma página, pulsamos `Añadir un punto de conexión` y luego `Seleccionar eventos`. Seleccionamos `Charge` y del desplegable que se abre `charge.succeeded`. Vamos a continuar en la siguiente clase porque también hay que instalar algo para hacer la comunicación entre Stripe 'real' y nuestro backend.
+## Hookdeck - Event Gateway - Forwarder
+
+https://hookdeck.com/
+
+Todavía no hemos desplegado nuestra app en ningún sitio, por lo que no sabemos que URL hay que indicar en `https://dashboard.stripe.com/test/webhooks/create?endpoint_location=hosted`, en la parte `URL del punto de conexión`.
+
+Para esto usamos Hookdeck, que me manda el body como lo recibe Stripe. Es más que un forwarder, pero lo vamos a usar para eso. Nos creamos una cuenta y pulsamos en `Create connection`. Seguimos los pasos y nos pide instalar el CLI `npm install hookdeck-cli -g`
+
+Una vez instalado, hacemos login con `hookdeck login`.
+
+Y, por último, ejecutamos `hookdeck listen [PORT] stripe-to-localhost` donde en nuestro caso, PORT es 3003.
+
+En la web de hookdeck `https://dashboard.hookdeck.com/create-first-connection` veremos que estamos conectados con el mensaje `CLI connected`.
+
+Con esto estamos haciendo el forwarding.
+
+Volvemos a Stripe y pegamos el Hookdeck URL en la URL del punto de conexión.
+
+En esa misma página de Stripe, pulsamos `Seleccionar eventos`. Seleccionamos `Charge` y del desplegable que se abre `charge.succeeded` y pulsamos `Añadir eventos`. Pulsamos `Añadir punto de conexión`.
+
+Nos lleva a una nueva pantalla y, donde aparece Secreto de firma, pulsamos en `Revelar`. Copiamos el secret.
+
+Yo me he hecho una variable de entorno con ese secret. Es decir, he tocado los archivos `.env`, `.env.template` y `envs.ts`.
+
+Hacemos la prueba de Postman, POST `Create Payment Session`. Pulsamos Cmd+Url que sale en la respuesta. Informamos y pagamos. Nos apareceran datos del evento en la consola (porque los estamos imprimiendo) y en Hookdeck veremos un status 200
+
+Para las pruebas vamos a tener que tener arriba el servicio de Hookdeck.
+
+Para producción, en Stripe, cambiaremos la URL de Hookdeck por la real de producción.
 
 ## Testing
 
 - Ejecutar con el comando: `npm run start:dev`
-- En la carpeta `postman` se ha dejado un ejemplo de llamada desde Postman
+- Ir a Stripe: `https://dashboard.stripe.com/test/webhooks/we_1PLUcVP9PiuQ3fHnL8QsgkRm`
+- Escuchar Hookdeck: `hookdeck listen 3003 stripe-to-localhost`
+- Ir a Hookdeck: `https://dashboard.hookdeck.com/cli/events`
+- En la carpeta `postman` se ha dejado un ejemplo de llamada desde Postman. Ejecutar el POST `Create Payment Session`
+  - De la respuesta de Postman ir al final y con Cmd pulsado, selecionar la URL (al final de la respuesta)
+  - Informar los datos en Stripe
+  - Veremos en la ejecución de hookdeck un status 200 y en la consola aparecerán datos del evento
