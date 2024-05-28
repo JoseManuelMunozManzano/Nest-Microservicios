@@ -31,7 +31,8 @@ export class PaymentsController {
   }
 
   // El webhook para manejar los pagos.
-  // Esto lo dejamos para el final.
+  // Indicamos req y res directamente porque Stripe pide el raw body.
+  // Si se hace algún tipo de procesamiento sobre ese body Stripe dará error.
   @Post('webhook')
   async stringWebhook(@Req() req: Request, @Res() res: Response) {
     return this.paymentsService.stripeWebhook(req, res);

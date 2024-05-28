@@ -102,6 +102,12 @@ Ver este video `https://cursos.devtalles.com/courses/take/nestjs-microservicios/
 
 Tenemos que modificar `main.ts`, `payments.controller.ts` y `payments.service.ts`.
 
+## Implementar el Webhook
+
+Continuamos desarrollando. El código se sigue cogiendo de `https://dashboard.stripe.com/test/webhooks/create?endpoint_location=hosted`
+
+En esa misma página, pulsamos `Añadir un punto de conexión` y luego `Seleccionar eventos`. Seleccionamos `Charge` y del desplegable que se abre `charge.succeeded`. Vamos a continuar en la siguiente clase porque también hay que instalar algo para hacer la comunicación entre Stripe 'real' y nuestro backend.
+
 ## Testing
 
 - Ejecutar con el comando: `npm run start:dev`

@@ -49,6 +49,25 @@ export class PaymentsService {
     // Este código viene de aquí: https://dashboard.stripe.com/test/webhooks/create?endpoint_location=hosted
     const sig = req.headers['stripe-signature'];
 
+    let event: Stripe.Event;
+
+    // This is your Stripe CLI webhook secret for testing your endpoint locally.
+    const endpointSecret =
+      'whsec_b0854adf1e8be5504172a85020a91f8c4ee46f33a57b115da8e4987f41dacef7';
+
+    try {
+      event = this.stripe.webhooks.constructEvent(
+        req['rawBody'],
+        sig,
+        endpointSecret,
+      );
+    } catch (err) {
+      res.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
+
+    console.log({ event });
+
     return res.status(200).json({ sig });
   }
 }
