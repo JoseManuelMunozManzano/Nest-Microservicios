@@ -144,6 +144,10 @@ Esto lo hacemos en nuestro `payments-session.dto.ts` añadiendo el campo orderId
 
 Este orderId recibido lo enviaremos a otro microservice para indicarle que se pagó.
 
+## Configurar variables de entorno faltantes
+
+Vamos a poner como variables de entorno `success_url` y `cancel_url`.
+
 ## Testing
 
 - Ejecutar con el comando: `npm run start:dev`
