@@ -136,6 +136,14 @@ Para las pruebas vamos a tener que tener arriba el servicio de Hookdeck.
 
 Para producción, en Stripe, cambiaremos la URL de Hookdeck por la real de producción.
 
+## Enviar y recibir el ID de la orden
+
+Sabemos que el pago funciona, pero, ¿Cómo hacemos match con nuestra ordenId? Porque la idea es que se pague y Stripe me diga que se pagó y el orderId, que estamos creando en nuestro microservicio `orders-ms`. Además, Stripe nos da mucha más información, como el recibo... Pero lo que no tenemos, obviamente, es nuestro orderId, con lo que lo vamos a colocar.
+
+Esto lo hacemos en nuestro `payments-session.dto.ts` añadiendo el campo orderId, por ahora de tipo string, aunque acabará siendo de tipo UUID. También modificamos `payments.service.ts`, donde obtendremos el orderId que pasaremos desde Postman en el JSON y lo colocaremos en la metadata para Stripe. Luego, lo recibimos en la parte de Webhook.
+
+Este orderId recibido lo enviaremos a otro microservice para indicarle que se pagó.
+
 ## Testing
 
 - Ejecutar con el comando: `npm run start:dev`

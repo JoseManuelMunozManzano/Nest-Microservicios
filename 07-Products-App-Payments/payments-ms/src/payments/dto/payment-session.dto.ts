@@ -11,6 +11,9 @@ import {
 // Vamos a indicar la información mínima indispensable para hacer el pago
 export class PaymentSessionDto {
   @IsString()
+  orderId: string;
+
+  @IsString()
   currency: string;
 
   @IsArray()
