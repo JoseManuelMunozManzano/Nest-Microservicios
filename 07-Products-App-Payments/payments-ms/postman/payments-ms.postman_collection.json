@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"currency\": \"eur\",\n    \"items\": [\n        {\n            \"name\": \"Teclado Mecánico\",\n            \"price\": 100,\n            \"quantity\": 2\n        },\n        {\n            \"name\": \"Mouse\",\n            \"price\": 45.99,\n            \"quantity\": 3\n        }        \n    ]\n}",
+					"raw": "{\n    \"orderId\": \"XYZ123\",\n    \"currency\": \"eur\",\n    \"items\": [\n        {\n            \"name\": \"Teclado Mecánico\",\n            \"price\": 100,\n            \"quantity\": 2\n        },\n        {\n            \"name\": \"Mouse\",\n            \"price\": 45.99,\n            \"quantity\": 3\n        }        \n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
