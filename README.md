@@ -18,5 +18,7 @@ En la carpeta `documentación` podemos ver un par de archivos PDF. Uno con los s
 - 04-Products-App-Nats
 - 05-Products-App-Nats-Docker
 - 06-Products-Launcher
-  - Es el lanzador de productos, del proyecto 05-Products-App-Nats-Docker
+  - Es el lanzador de productos. Aglutina todos los microservicios, incluso los que están en proyectos posteriores, como payments-ms
 - 07-Products-App-Payments
+- 08-Integrar-OrdersMS y PaymentsMS
+  - No es un proyecto como tal, sino un README
