@@ -37,6 +37,39 @@ Recordar que siempre que hablemos de Products Launcher, estamos hablando sobre t
 
 Vamos a unir el repositorio de payments-ms con nuestro products-launcher.
 
+## Microservicio Híbrido - REST - Nats
+
+Queremos que nuestro `payments-ms` sea híbrido.
+
+Por ahora, `payments-ms` está dentro de nuestra red.
+
+Lo vamos a comunicar con NATS para que pueda hablar con los demás microservicios (es la única forma de llegar a ellos)
+
+Nosotros tenemos también que habilitar un puerto, el de nuestra aplicación REST, para que Stripe, mediante el Webhook, hable con `payments-ms`. Esto se puede hacer de varias maneras:
+
+- No híbrido: En este caso Stripe se conecta por nuestro gateway, o podríamos crear otro gateway nuevo. No lo vamos a hacer así porque no queremos que se sepa todo lo que está expuesto en el gateway. Queremos que sea medio anónimo, aunque eso no es una medida de seguridad per se. Recordar que como medidas de seguridad con Stripe tenemos una verificación de la firma (stripe-signature), tenemos un endpointSecret y nuestra variable de entorno stripeSecret
+- Híbrido: va a soportar tanto NATS como HTTP
+
+De nuevo, en Bitbucket (https://bitbucket.org/neimerc/products-launcher/src/main/), trabajando con los submodulos, tenemos que entrar en `payments-ms` y ejecutar `npm i` para instalar las dependencias.
+
+Ahora instalamos dos paquetes dentro de la carpeta de `payments-ms`. Vamos a la documentación de Nest (https://docs.nestjs.com/microservices/basics#installation) e instalamos
+
+```
+npm i --save @nestjs/microservices
+```
+
+Y también instalamos NATS (https://docs.nestjs.com/microservices/nats)
+
+```
+npm i --save nats
+```
+
+Ahora modificamos nuestro `main.ts` para levantar la parte de los microservicios. También modificamos nuestro fichero `.env` y `.env.template`, y también `config/envs.ts`.
+
+Volvemos a bajar y a levantar nuestro `docker-compose` y, para saber que es correcto, me voy a Portainer, a los containers, y pulso click sobre el puerto 8222 de NATS. Se abre la web y cambio al URL a `http://192.168.1.41:8222/connz`. Debo ver tres conexiones.
+
+Ahora tenemos que modificar `payments.controller.ts` para que podamos recibir el payload y no el body. Esto lo podemos manejar de las dos formas, con un POST o con un MessagePattern.
+
 ### Testing
 
 - Para ello agregaremos un nuevo submódulo (leer el README.md del proyecto 06-Products-Launcher para saber como hacerlo)
