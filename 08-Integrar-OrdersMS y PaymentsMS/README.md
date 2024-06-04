@@ -70,6 +70,16 @@ Volvemos a bajar y a levantar nuestro `docker-compose` y, para saber que es corr
 
 Ahora tenemos que modificar `payments.controller.ts` para que podamos recibir el payload y no el body. Esto lo podemos manejar de las dos formas, con un POST o con un MessagePattern.
 
+## PaymentSession desde Order MS
+
+Vamos a seguir con lo que indicamos en la sección anterior.
+
+Vamos a trabajar con POST y con MessagePattern. Para ello modificamos `payments.controller.ts`.
+
+Vamos a llamar a nuestro microservicio `payments-ms` desde el microservicio `orders-ms`, en `orders.controller.ts`. También creamos una nueva interface. En `/dto` creamos la carpeta `interfaces` y dentro la interface `order-with-products.interface.ts` que muestra como luce nuestra orden con los productos. También tocamos `orders.service.ts`.
+
+Para probar esto, ejecutar en Postman `Create Order`.
+
 ### Testing
 
 - Para ello agregaremos un nuevo submódulo (leer el README.md del proyecto 06-Products-Launcher para saber como hacerlo)
