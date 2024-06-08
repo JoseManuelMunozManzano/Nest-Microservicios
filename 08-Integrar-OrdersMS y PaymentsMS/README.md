@@ -102,7 +102,7 @@ Ahora mismo el Webhook no está escuchando nada.
 
 Levantamos nuestro forwarder (hookdeck): `hookdeck listen 192.168.1.41:3003 stripe-to-localhost` y lo dejamos corriendo para todos los siguientes puntos que quedan de este módulo.
 
-En Postman lanzamos `Create Order` y debemos ver en la consola, tras pagar, la `metadata` y el `orderId`.
+En Postman lanzamos `Create Order` y debemos ver en la consola, tras pagar, la `metadata` y el `orderId`. También podemos irnos a la parte de Stripe y pulsar el botón Reenviar `https://dashboard.stripe.com/test/webhooks/we_1PLUcVP9PiuQ3fHnL8QsgkRm`
 
 ![alt metadata y order id](./images/Metadata_OrderId.png)
 
@@ -125,6 +125,28 @@ Eso es lo importante aquí, cuando estamos desarrollando el comportamiento del m
 Cuando terminamos todo y lo desplegamos a la web, ya no lo necesitaremos porque Stripe hablará directamente a nuestro "ingress" o puerta que abriremos para que nos comunique los pagos.
 
 De nuevo, sólo es para poder conectar Stripe con nuestro localhost, pero hay otros servicios como NgRok, smee, Microsoft tunnelings (que son los que conozco)
+
+## EventPattern - Emitir eventos
+
+Hasta ahora estamos mostrando en consola la información que viene de Stripe, en este caso solo el orderId, pero necesitamos sacar más data, así que modificamos `payments.service.ts`.
+
+Nos vamos a la parte de Stripe y pulsamos el botón Reenviar `https://dashboard.stripe.com/test/webhooks/we_1PLUcVP9PiuQ3fHnL8QsgkRm`. No olvidar levantar el proyecto y tener `hookdeck` arrancado.
+
+Ahora, la pregunta que tenemos que hacernos es, para mandar la comunicación hacia el otro microservicio (o en este caso por NATS) hacia orders-ms, ¿El webhook necesita esperar que la respuesta de orders-ms sea que todo está bien, o no hace falta?
+
+En este caso, como esto lo dispara Stripe, Stripe no está esperando ninguna respuesta tipo id, o alguna data, salvo un status 200 si todo fue bien o un Bad Request si algo fue mal. En estas circunstancias en las que solo tenemos que emitir un evento y no esperar una respuesta, ahí, en vez de usar MessagePattern usamos un EventPattern, los cuales NO escuchan una respuesta.
+
+También vamos a hacer la configuración para poder hablar directamente con nuestro NATS Server, para poder comunicarnos con el.
+
+En `orders-ms` nos copiamos la carpeta `transports` a `payments-ms`. Además, en la carpeta `config` de `payments-ts` creamos el archivo `services.ts`.
+
+Ahora tenemos que usar la importación de `transports/nats.module.ts` en el módulo donde lo vamos a utilizar, en este caso `payments.module.ts`. Con eso podemos hacer ya la inyección del cliente en `payments.service.ts` para poder comunicarme con NATS desde ese servicio.
+
+Una vez enviado el mensaje, tendremos que poner a escuchar ese mensaje en aquellos sitios donde queramos que se sepa cuando se hizo un pago de manera exitosa. En este caso es `orders.controller.ts`, ya que en los controladores se escuchan los mensajes que vienen y se emiten respuestas.
+
+![alt orders-ms data](./images/orders-ms_data.png)
+
+Ahora tenemos que marcar como pagada la orden y almacenar la información de `orderId` y `receiptUrl` en algún lugar, ya que es el recibo de pago. Vamos a modificar la BBDD para poder almacenar la información nueva.
 
 ### Testing
 
