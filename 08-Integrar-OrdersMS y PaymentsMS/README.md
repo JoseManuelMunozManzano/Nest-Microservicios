@@ -80,6 +80,20 @@ Vamos a llamar a nuestro microservicio `payments-ms` desde el microservicio `ord
 
 Para probar esto, ejecutar en Postman `Create Order`.
 
+## Retornar URLs de sesión
+
+La información que estamos retornando desde `orders.service.ts` no es real. Tenemos que obtener la información basada en la orden.
+
+Con esto llegamos desde nuestro orders-ms hasta nuestro payments-ms.
+
+Modificamos `orders.service.ts`, `payments.controller.ts` y `payments.service.ts`.
+
+Para probar esto, ejecutar en Postman `Create Order`.
+
+Ya tenemos la primera fase de comunicación entre microservicios.
+
+Ahora queda disparar el pago en Stripe, y una vez hecho el pago, tenemos que implementar la comunicación en nuestro Webhook, ya que es este el que se comunica con payments-ms, habla con NATS y dice que alguien pagó la orden, donde querré saber cierta información del recibo, con qué se pagó, cuál es el id del charge de Stripe para mantener la relación...
+
 ### Testing
 
 - Para ello agregaremos un nuevo submódulo (leer el README.md del proyecto 06-Products-Launcher para saber como hacerlo)
