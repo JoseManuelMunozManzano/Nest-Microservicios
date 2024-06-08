@@ -94,6 +94,38 @@ Ya tenemos la primera fase de comunicación entre microservicios.
 
 Ahora queda disparar el pago en Stripe, y una vez hecho el pago, tenemos que implementar la comunicación en nuestro Webhook, ya que es este el que se comunica con payments-ms, habla con NATS y dice que alguien pagó la orden, donde querré saber cierta información del recibo, con qué se pagó, cuál es el id del charge de Stripe para mantener la relación...
 
+## Hookdeck - Levantar proxy y forwarder
+
+Nos centramos en la parte de Webhook.
+
+Ahora mismo el Webhook no está escuchando nada.
+
+Levantamos nuestro forwarder (hookdeck): `hookdeck listen 192.168.1.41:3003 stripe-to-localhost` y lo dejamos corriendo para todos los siguientes puntos que quedan de este módulo.
+
+En Postman lanzamos `Create Order` y debemos ver en la consola, tras pagar, la `metadata` y el `orderId`.
+
+![alt metadata y order id](./images/Metadata_OrderId.png)
+
+**Pregunta**
+
+Tengo una ligera confusión a la hora de usar HookDeck es totalmente necesario?
+
+Quiero decir, ¿no es posible que Stripe me devuelva las respuestas correspondientes directo a mi backend a algun microservicio que lo capture?
+
+Pregunto porque en base al video anterior en que generamos la orden de pago y la hicimos, todo "PARECIÓ" funcionar bien, y en este resulta que hookdeck siempre estuvo off, entonces ahí es un poquito raro de entender si hookdeck es necesario o no..
+
+**Respuesta**
+
+No, no lo es en lo absoluto.
+
+HookDeck es un servicio que nos permite tener un URL publicado en la web (por decirlo así) en el que Stripe llamará, luego, HookDeck nos envía lo que recibió de Stripe a nuestro localhost.
+
+Eso es lo importante aquí, cuando estamos desarrollando el comportamiento del microservicio que recibe los pagos, ocupamos estar probando el código constantemente y ahí es cuando lo necesitamos.
+
+Cuando terminamos todo y lo desplegamos a la web, ya no lo necesitaremos porque Stripe hablará directamente a nuestro "ingress" o puerta que abriremos para que nos comunique los pagos.
+
+De nuevo, sólo es para poder conectar Stripe con nuestro localhost, pero hay otros servicios como NgRok, smee, Microsoft tunnelings (que son los que conozco)
+
 ### Testing
 
 - Para ello agregaremos un nuevo submódulo (leer el README.md del proyecto 06-Products-Launcher para saber como hacerlo)
