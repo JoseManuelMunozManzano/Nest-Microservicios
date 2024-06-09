@@ -148,6 +148,24 @@ Una vez enviado el mensaje, tendremos que poner a escuchar ese mensaje en aquell
 
 Ahora tenemos que marcar como pagada la orden y almacenar la información de `orderId` y `receiptUrl` en algún lugar, ya que es el recibo de pago. Vamos a modificar la BBDD para poder almacenar la información nueva.
 
+## Preparar BD y PaidOrderDto
+
+Cambiamos la BBDD.
+
+Para ello modificamos, en `orders-ms`, nuestro archivo de prisma `schema.prisma`.
+
+Una vez hechos los cambios, necesitamos impactar la BBDD y generar la migración para que eso se pueda aplicar después. Para esto es necesario primero crearnos un archivo `.env` con la referencia a `DATABASE_URL` en la carpeta `orders-ms` (Recordar que estando en `products-launcher` no tenemos los archivos .env)
+
+También nos vamos a crear el DTO que vamos a necesitar para hacer las inserciones en la nueva tabla. En `orders-ms`, en la carpeta `orders/dto` nos creamos una nueva dto llamada `paid-order.dto.ts`.
+
+Ya solo falta grabar en BBDD.
+
+## Actualizar order como pagada
+
+Actualizamos, de nuestro `orders-ms` el controlador `orders.controller.ts` y el servicio `orders.service.ts` para poder manejar el pago de la orden.
+
+Para probar esto, en Stripe `https://dashboard.stripe.com/test/webhooks/we_1PLUcVP9PiuQ3fHnL8QsgkRm` pulsamos en botón `Reenviar`.
+
 ### Testing
 
 - Para ello agregaremos un nuevo submódulo (leer el README.md del proyecto 06-Products-Launcher para saber como hacerlo)
@@ -155,8 +173,12 @@ Ahora tenemos que marcar como pagada la orden y almacenar la información de `or
 - Modificamos `docker-compose.yml` para incluir el nuevo servicio para que se levante
 - Copiamos de uno de los submodulos ya existentes los ficheros `.dockerignore` y `dockerfile` y los pegamos en `payments-ms`. Del nuevo fichero `dockerfile` cambiamos el puerto que exponemos al 3003 (aunque esto da igual)
 - Definimos las variables de entorno nuevas en el fichero `.env` y `.env.template` y las definimos en `docker-compose.yml`
+- Si es necesario, actualizamos Prisma, pero en nuestra carpeta de `orders-ms`: `npx prisma migrate dev --name stripe-pay`
+  - Necesitaremos el archivo `.env` con la `DATABASE_URL` (ya se hizo en uno de los pasos anteriores)
 - Podemos ya ejecutar el comando `docker compose up --build` en la carpeta de `products-launcher`
   - Recordar que yo tengo docker context apuntando a mi Raspberry Pi
-- Ya podemos probar en Postman el endpoint de los payments
-  - Recordar que mi endpoint será algo así: `http://192.168.1.41:3003//payments/create-payment-session`
-- Ir a mi RaspberryPi, a Portainer, y ver si está todo arriba. Si vemos que orders-ms no se arranca, arrancarlo manualmente
+  - Ir a mi RaspberryPi, a Portainer, y ver si está todo arriba. Si vemos que orders-ms no se arranca, arrancarlo manualmente
+- Levantamos nuestro forwarder (hookdeck): `hookdeck listen 192.168.1.41:3003 stripe-to-localhost`
+- Ya podemos probar en Postman el endpoint de los payments o ir a Stripe y pulsar el Botón para Reenviar el último pago
+  - Recordar que mi endpoint será algo así: `http://192.168.1.41:3003/payments/create-payment-session`
+  - Reenviar último pago: `https://dashboard.stripe.com/test/webhooks/we_1PLUcVP9PiuQ3fHnL8QsgkRm`

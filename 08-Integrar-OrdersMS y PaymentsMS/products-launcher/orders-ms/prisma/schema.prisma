@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Solo vamos a tratar las órdenes.
+enum OrderStatus {
+  PENDING
+  PAID
+  DELIVERED
+  CANCELLED
+}
+
+model Order {
+  id          String @id @default(uuid())
+  totalAmount Float
+  totalItems  Int
+
+  status         OrderStatus @default(PENDING)
+  paid           Boolean     @default(false)
+  paidAt         DateTime?
+  stripeChargeId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // He escrito esto y he grabado (Cmd+S)...
+  OrderItem    OrderItem[]
+  // Aparece este campo automáticamente al crear la tabla OrderReceipt, campo order
+  // Uno a uno
+  OrderReceipt OrderReceipt?
+}
+
+model OrderItem {
+  id        String @id @default(uuid())
+  productId Int
+  quantity  Int
+  price     Float
+
+  // ... y esta relación se ha generado automáticamente, sin tener que escribirla.
+  Order   Order?  @relation(fields: [orderId], references: [id])
+  orderId String?
+}
+
+// Tabla independiente para los recibos de los pagos
+model OrderReceipt {
+  id String @id @default(uuid())
+
+  // Relación uno a uno indicando @unique
+  order   Order  @relation(fields: [orderId], references: [id])
+  orderId String @unique
+
+  receiptUrl String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

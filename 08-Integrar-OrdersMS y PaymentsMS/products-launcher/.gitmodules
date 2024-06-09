@@ -1,0 +1,12 @@
+[submodule "client-gateway"]
+	path = client-gateway
+	url = https://Neimerc@bitbucket.org/neimerc/client-gateway.git
+[submodule "products-ms"]
+	path = products-ms
+	url = https://Neimerc@bitbucket.org/neimerc/products-ms.git
+[submodule "orders-ms"]
+	path = orders-ms
+	url = https://Neimerc@bitbucket.org/neimerc/orders-ms.git
+[submodule "payments-ms"]
+	path = payments-ms
+	url = https://bitbucket.org/neimerc/payments-ms.git
