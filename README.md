@@ -21,4 +21,6 @@ En la carpeta `documentación` podemos ver un par de archivos PDF. Uno con los s
   - Es el lanzador de productos. Aglutina todos los microservicios, incluso los que están en proyectos posteriores, como payments-ms
 - 07-Products-App-Payments
 - 08-Integrar-OrdersMS y PaymentsMS
-  - No es un proyecto como tal, sino un README
+  - No es un proyecto como tal, sino un README y de nuevo el product-launcher actualizado
+- 09-autenticacion
+  - Autenticación basada en JSON Web Token que usaremos para verificar nuestros endpoints
