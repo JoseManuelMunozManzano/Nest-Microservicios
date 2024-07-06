@@ -64,10 +64,33 @@ Vamos a la carpeta de `client-gateway` y creamos un nuevo resource: `nest g res 
 **products-launcher**
 En el archivo `docker-compose.yml` añadimos la parte del `auth-ms`.
 
-**Importante**
-A la hora de subir a Bitbucket primero se suben los submodules y por último el product-launcher.
+## Login y Register DTOs
 
-Es decir, en este caso primero subimos `auth-ms` y `client-gateway` y luego `product-launcher`.
+Vamos a configurar los DTOs para que la información vaya validada.
+
+En proyectos reales, `auth-ms` va a dictar lo que necesita y `client-gateway` se tiene que adaptar a lo que el microservicio pide.
+
+Aunque al final el DTO que va en los dos es el mismo.
+
+**auth-ms**
+
+En `src/auth` creamos la carpeta `dto` y dentro el archivo de barril `index.ts` y los dto `login-user.dto.ts` y `register-user.dto.ts`.
+
+Aunque no vamos a utilizar directamente las respuestas HTTP, igualmente vamos a instalar `class-validator` y `class-transform`.
+
+```
+npm i class-validator class-transformer
+```
+
+Modificamos `main.ts` para tener la validación de los dto.
+
+Modificamos `auth.controller.ts` para añadir el payload.
+
+**client-gateway**
+
+En la carpeta `src/auth` copiamos la capeta `dto` que creamos en el microservicio `auth-ms`.
+
+Modificamos `auth.controller.ts` ya teniendo en cuenta estos dto.
 
 ## Testing
 
@@ -83,6 +106,28 @@ Para probar la parte de auth-ms ejecutar estos endpoint en Postman
 
 POST: `http://192.168.1.41:3000/api/auth/register`
 
+```
+JSON body
+{
+    "name": "José Manuel",
+    "email": "jmmunoz@google.com",
+    "password": "Abc123456@"
+}
+```
+
 POST: `http://192.168.1.41:3000/api/auth/login`
 
+```
+JSON body
+{
+    "email": "jmmunoz@google.com",
+    "password": "Abc123456@"
+}
+```
+
 GET: `http://192.168.1.41:3000/api/auth/verify`
+
+**Importante**
+A la hora de subir a Bitbucket primero se suben los submodules y por último el product-launcher.
+
+Es decir, en este caso primero subimos `auth-ms` y `client-gateway` y luego `product-launcher`.
