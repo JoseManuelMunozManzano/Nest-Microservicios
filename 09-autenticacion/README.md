@@ -33,6 +33,42 @@ Ahora solo tenemos que levantar el proyecto,. Para probar si todo está funciona
 
 En el proyecto he creado una carpeta `postman` con los endpoints de Postman.
 
+## Comunicar Gateway con Auth-ms
+
+**auth-ms**
+
+Este microservice `auth-ms` no va a ser híbrido, sino un simple microservicio. Va a tener tres endpoints.
+
+Hemos borrado, en la carpeta `auth-ms/src`, los fuentes `app.controller.spec`, `app.controller.ts` y `app.service.ts`.
+
+Dentro de la carpeta `auth-ms` nos generamos el siguiente resource: `nest g res auth --no-spec`. Seleccionamos `Microservice (non-HTTP)` y `n` a la pregunta de si queremos generar el CRUD. Esto crea el módulo, el servicio y el controlador que necesito.
+
+Instalamos el paquete `npm i --save @nestjs/microservices` y creamos los tres endpoints en nuestro `auth.controller.ts` recien creado.
+
+Y también instalamos NATS (https://docs.nestjs.com/microservices/nats) `npm i --save nats` y el paquete joi y dotenv `npm i --save joi dotenv`.
+
+Creamos los ficheros `.env` y su clon `.env.template` para variables de entorno, y también el archivo de configuración`config/envs.ts`, el archivo de barril `config/index.ts` y el archivo `services.ts`.
+
+Ahora modificamos nuestro `main.ts` para transformar a microservicio.
+
+Nos creamos en la raiz los archivos `.dockerignore` y `dockerfile`.
+
+**client-gateway**
+
+En la parte de `client-gateway` necesitamos crearnos otro módulo para que todo esté bien agrupado y tenga su responsabilidad única.
+
+Lo primero que he tenido que hacer es instalar las dependencias, porque como no aparecen al clonar `products-launcher` me daba error. `npm i`.
+
+Vamos a la carpeta de `client-gateway` y creamos un nuevo resource: `nest g res auth --no-spec`. Seleccionamos `REST API` y `n` a la pregunta de si queremos generar el CRUD. Esto crea el módulo y el controlador que necesito. Vamos a la nueva carpeta en `client-gateway/src/auth` y borramos `auth.service.ts` porque no lo necesito. Y en `auth.controller.ts` borro la parte de importación del service porque ya no existe y creamos los RESTFul API endpoints que necesitamos.
+
+**products-launcher**
+En el archivo `docker-compose.yml` añadimos la parte del `auth-ms`.
+
+**Importante**
+A la hora de subir a Bitbucket primero se suben los submodules y por último el product-launcher.
+
+Es decir, en este caso primero subimos `auth-ms` y `client-gateway` y luego `product-launcher`.
+
 ## Testing
 
 En nuestro proyecto `products-launcher`.
@@ -42,3 +78,11 @@ Vamos a levantar el `client-gateway` y el `authService` más el `NATS`.
 No nos va a hacer falta levantar todavía la parte de payments, ni de órdenes ni de productos.
 
 Para todo ello, ejecutar: `docker compose up --build`
+
+Para probar la parte de auth-ms ejecutar estos endpoint en Postman
+
+POST: `http://192.168.1.41:3000/api/auth/register`
+
+POST: `http://192.168.1.41:3000/api/auth/login`
+
+GET: `http://192.168.1.41:3000/api/auth/verify`
