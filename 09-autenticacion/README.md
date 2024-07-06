@@ -305,7 +305,7 @@ No nos va a hacer falta levantar todavía la parte de payments, ni de órdenes n
 
 Para todo ello, ejecutar: `docker compose up --build`
 
-Para probar la parte de auth-ms ejecutar estos endpoint en Postman
+Para probar la parte de auth-ms ejecutar estos endpoint en Postman (se encuentran en la carpeta postman)
 
 POST: `http://192.168.1.41:3000/api/auth/register`
 
