@@ -154,13 +154,31 @@ Probamos ejecutando `docker compose up --build` que tomará las nuevas dependenc
 
 Si nos vamos a Docker, a los logs, deberíamos ver el log `MongoDB connected`.
 
+## Registro de un usuario
+
+Vamos a grabar en BD nuestro primer usuario.
+
+**auth-ms**
+
+Hemos modificado `prisma/schema.prisma` indicando @unique en el campo email de nuestro modelo. Indicar que no está funcionando esta parte de Prisma con MongoDB.
+
+Volvemos a generar el cliente de Prisma: `npx prisma generate`.
+
+Modificamos `auth.controller.ts` y `auth.service.ts`.
+
+**client-gateway**
+
+Modificamos `src/auth/auth.controller.ts` para manejar la excepción si algo ha ido mal y obtener el error que viene de nuestro microservicio `auth-ms`. Sin esto, el error será un status 500 con mensaje Internal Server Error.
+
+**testing**
+
+Probamos el POST para registrar un usuario en Postman (ver el testing abajo del todo para ver el endpoint)
+
 ## Testing
 
 En nuestro proyecto `products-launcher`.
 
 Vamos a levantar el `client-gateway` y el `authService` más el `NATS`.
-
-Si hace falta, generamos el cliente de Prisma dentro del proyecto `auth-ms`: `npx prisma generate`
 
 No nos va a hacer falta levantar todavía la parte de payments, ni de órdenes ni de productos.
 
