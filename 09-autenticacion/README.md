@@ -92,6 +92,24 @@ En la carpeta `src/auth` copiamos la capeta `dto` que creamos en el microservici
 
 Modificamos `auth.controller.ts` ya teniendo en cuenta estos dto.
 
+## Aprovisionar MongoDB
+
+https://www.mongodb.com/es/products/platform/atlas-database
+
+Vamos a grabar en MongoDB nuestros usuarios y encriptar sus contraseñas y lo vamos a usar para validar.
+
+Esta parte de MongoDB NO lo vamos a hacer mediante Docker porque muchos usuarios indican problemas para conectar Prisma con la imagen de Mongo como un contenedor.
+
+Lo que vamos a hacer es aprovisionar la BD de MongoDB usando MongoDB Atlas (url de arriba).
+
+Yo tengo instalado MongoDB Compass, así que me conecto por ahí.
+
+Recordar que hay que tener configurado, en MongoDB Atlas, la parte de Database Access (un usuario con permisos) y Network Access (la ip desde donde nos conectamos usando MongoDB Compass)
+
+**products-launcher**
+
+Lo que si necesitamos es obtener el password de un usuario de acceso a nuestro MongoDB y colocarlo en nuestro `.env` como una variable de entorno y añadir esa variable de entorno a nuestro `docker-compose.yml` en la parte donde configuramos `auth-ms`.
+
 ## Testing
 
 En nuestro proyecto `products-launcher`.
