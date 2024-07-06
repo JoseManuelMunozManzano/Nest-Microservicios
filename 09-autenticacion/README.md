@@ -279,6 +279,22 @@ En la carpeta `auth` también nos vamos a crear la carpeta `interfaces` para pon
 
 Probamos el GET para hacer el verify mandando el Bearer Token.
 
+## Auth-ms - Validar y revalidar token
+
+Vamos a implementar la validación y verificación del token en nuestro microservicio `auth-ms`.
+
+**auth-ms**
+
+Modificamos `auth.controller.ts` y `auth.service.ts`.
+
+**client-gateway**
+
+Desde `auth.guard.ts` disparamos la petición que llama al microservicio `auth-ms`, controlador `auth.controller.ts` para verificar el token.
+
+**testing**
+
+Probamos el GET para hacer el verify mandando el Bearer Token. Obtendremos el usuario y un nuevo token.
+
 ## Testing
 
 En nuestro proyecto `products-launcher`.
