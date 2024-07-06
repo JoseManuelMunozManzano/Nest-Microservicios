@@ -174,6 +174,18 @@ Modificamos `src/auth/auth.controller.ts` para manejar la excepción si algo ha 
 
 Probamos el POST para registrar un usuario en Postman (ver el testing abajo del todo para ver el endpoint)
 
+## Encriptar contraseña
+
+**auth-ms**
+
+Dentro de este microservicio hacemos las siguientes instalaciones: `npm i bcrypt`, y su tipado `npm i -D @types/bcrypt`.
+
+Modificamos `auth.service.ts`.
+
+**testing**
+
+Para probar esto, borramos desde MongoDB Compass los usuarios que ya hayamos creado, puesto que su contraseña no estaba encriptada, y volvemos a registrar algún usuario desde Postman, para comprobar que ahora sí que aparece el hash del password.
+
 ## Testing
 
 En nuestro proyecto `products-launcher`.
