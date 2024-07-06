@@ -230,6 +230,37 @@ Probamos el POST para hacer register y/o login de un usuario en Postman (ver el 
 
 Con el token que obtengo, voy a la url `jwt.io` y pego ese token para ver la data que contiene.
 
+## Recibir JWT desde los headers
+
+https://docs.nestjs.com/security/authentication#implementing-the-authentication-guard
+
+Vamos a implementar también el `guard`. Vamos a mandar hacer la petición a nuestro microservice para verificar el token.
+
+Pero eso lo haremos luego. Por ahora vamos a asegurarnos de que podamos recibir el JWT.
+
+**client-gateway**
+
+Como nos vamos a crear un guard para hacer la verificación del token, en la carpeta `auth` nos creamos la carpeta `guards` y dentro el guard `auth.guard.ts`.
+
+Modificamos `auth.controller.ts` para usar el guard.
+
+**testing**
+
+Probamos el GET para hacer el verify, pero sin mandar el Bearer Token. Veremos que en la respuesta nos indica `Unauthorized` y status `401`.
+
+Si indicamos el Bearer Token entonces veremos nuestra respuesta fake, información que viene de la request, es decir:
+
+```
+{
+    "user": {
+        "id": 1,
+        "name": "Manolico",
+        "email": "manolico@google.com"
+    },
+    "token": "$eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODk0YWRhYjFhNjEwNWQ2ZDQ0NTExMiIsImVtYWlsIjoiam1tdW5vekBnb29nbGUuY29tIiwibmFtZSI6Ikpvc8OpIE1hbnVlbCIsImlhdCI6MTcyMDI3NjM2NCwiZXhwIjoxNzIwMjgzNTY0fQ.rM1wc-Boq2mKaQB9Z3RQDB1WZWNY3u5FJT7gs5sr3W0"
+}
+```
+
 ## Testing
 
 En nuestro proyecto `products-launcher`.
@@ -261,6 +292,8 @@ JSON body
     "email": "jmmunoz@google.com",
     "password": "Abc123456@"
 }
+
+Y en Authorization indicamos Bearer Token y pegamos el token que nos indique el login
 ```
 
 GET: `http://192.168.1.41:3000/api/auth/verify`
