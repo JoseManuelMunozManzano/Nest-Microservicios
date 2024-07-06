@@ -186,6 +186,50 @@ Modificamos `auth.service.ts`.
 
 Para probar esto, borramos desde MongoDB Compass los usuarios que ya hayamos creado, puesto que su contraseña no estaba encriptada, y volvemos a registrar algún usuario desde Postman, para comprobar que ahora sí que aparece el hash del password.
 
+## Login de usuario
+
+El login es muy similar al registro.
+
+**auth-ms**
+
+Modificamos `auth.service.ts` y `auth.controller.ts`.
+
+**client-gateway**
+
+Modificamos `src/auth/auth.controller.ts` para manejar la excepción si algo ha ido mal y obtener el error que viene de nuestro microservicio `auth-ms`. Sin esto, el error será un status 500 con mensaje Internal Server Error.
+
+**testing**
+
+Probamos el POST para hacer login de un usuario en Postman (ver el testing abajo del todo para ver el endpoint)
+
+## Generar JWT
+
+https://docs.nestjs.com/security/authentication#jwt-token
+
+Vamos a asegurarnos de que en nuestras respuestas, tanto el registro como el login, devuelvan un JWT con la información que nosotros queramos.
+
+**auth-ms**
+
+Dentro de este microservicio hacemos las siguientes instalaciones: `npm i @nestjs/jwt`.
+
+Como en `auth.service.ts` vamos a hacer la inyección del servicio Jwt, necesitamos hacer la importación de un módulo en `auth.module.ts`. En el módulo registramos de forma global el JwtModule.
+
+Necesitamos un Jwt Secret para firmar nuestros tokens. Esto no tiene que salir del servidor y entre menos se mueva de este servidor mejor. Lo vamos a colocar como una variable de entorno en `.env` y nuestro clon `.env.template`. Debemos modificar también `config/envs.ts`.
+
+En nuestro `auth.service` hemos creado un método que recibe un payload. Para darle un tipado estricto a dicho payload, creamos, en `auth`, la carpeta `interfaces` y dentro el archivo `jwt-payload.interface.ts`.
+
+**product-launcher**
+
+En el archivo `.env` y su clon `.env.template` copiamos la variable de entorno JWT_SECRET que creamos en el microservicio `auth-ms`.
+
+También lo indicamos en el archivo `docker-compose.yml` en la parte donde configuramos el lanzamiento de `auth-ms`.
+
+**testing**
+
+Probamos el POST para hacer register y/o login de un usuario en Postman (ver el testing abajo del todo para ver el endpoint)
+
+Con el token que obtengo, voy a la url `jwt.io` y pego ese token para ver la data que contiene.
+
 ## Testing
 
 En nuestro proyecto `products-launcher`.
