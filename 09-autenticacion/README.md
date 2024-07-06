@@ -110,11 +110,57 @@ Recordar que hay que tener configurado, en MongoDB Atlas, la parte de Database A
 
 Lo que si necesitamos es obtener el password de un usuario de acceso a nuestro MongoDB y colocarlo en nuestro `.env` como una variable de entorno y añadir esa variable de entorno a nuestro `docker-compose.yml` en la parte donde configuramos `auth-ms`.
 
+## Conectar Prisma con MongoDB
+
+https://www.prisma.io/docs/orm/overview/databases/mongodb
+
+Vamos a conectar Prisma con MongoDB para hacer las inserciones de BD y demás.
+
+**auth-ms**
+
+Necesitamos instalar Prisma como dependencia de desarrollo.
+
+```
+npm i -D prisma
+```
+
+Inicializamos Prisma.
+
+```
+npx prisma init
+```
+
+Este comando crea en la carpeta `auth-ms`, en el archivo `.env`, una variable de entorno con key `DATABASE_URL`. Pero como no queremos conectarnos a una BD PostgreSQL, lo cambiamos por la variable de entorno `AUTH_DATABASE_URL` que tenemos en el archivo `.env` de `products_launcher` pero le cambiamos el nombre de la key por `DATABASE_URL` para que sea como el que Prisma nos creó por defecto y donde apunta `auth-ms/prisma/schema.prisma`.
+
+Esto es solo para que Prisma pueda generar el cliente.
+
+De nuevo, en `auth-ms/prisma/schema.prisma` nos creamos nuestro modelo, que será muy sencillo y cambiamos nuestro provider a `mongodb`.
+
+Si estuviéramos trabajando con una BD relacional tradicional, tendríamos que hacer una migración, pero como estamos trabajando con MongoDB, que nos permite grabar objetos sin una estructura fija (podemos grabar lo que queramos) no hace falta hacer dicha migración.
+
+Lo que sí hace falta es generar el cliente de Prisma basado en el esquema.
+
+```
+npx prisma generate
+```
+
+Como este comando forma parte del proceso de pruebas, es decir, hay que ejecutarlo para que se pueda levantar, creamos un script nuevo en `package.json` llamado `prisma:docker` y modificamos el script `start:dev` para que lo llame.
+
+Para confirmar que puedo conectarme a Mongo desde mi código, modificamos `auth.service.ts`.
+
+**product-launcher**
+
+Probamos ejecutando `docker compose up --build` que tomará las nuevas dependencias y los cambios realizados en el `package.json`. Va a levantar el client, el servidor de Nats , pero lo que realmente nos interesa es que genere el Prisma Client del lado de nuestro contenedor, en nuestro Linux.
+
+Si nos vamos a Docker, a los logs, deberíamos ver el log `MongoDB connected`.
+
 ## Testing
 
 En nuestro proyecto `products-launcher`.
 
 Vamos a levantar el `client-gateway` y el `authService` más el `NATS`.
+
+Si hace falta, generamos el cliente de Prisma dentro del proyecto `auth-ms`: `npx prisma generate`
 
 No nos va a hacer falta levantar todavía la parte de payments, ni de órdenes ni de productos.
 
