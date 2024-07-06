@@ -336,3 +336,5 @@ GET: `http://192.168.1.41:3000/api/auth/verify`
 A la hora de subir a Bitbucket primero se suben los submodules y por último el product-launcher.
 
 Es decir, en este caso primero subimos `auth-ms` y `client-gateway` y luego `product-launcher`.
+
+Todo el código de autenticación se encuentra aquí: `https://bitbucket.org/neimerc/products-launcher/src/main/`
