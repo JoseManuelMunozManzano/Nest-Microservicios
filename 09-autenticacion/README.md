@@ -261,6 +261,24 @@ Si indicamos el Bearer Token entonces veremos nuestra respuesta fake, informaci�
 }
 ```
 
+## Decoradores personalizados
+
+https://docs.nestjs.com/custom-decorators
+
+**client-gateway**
+
+En `auth.controller.ts`, en el método `verifyToken`, tenemos como parámetro el request y de el obtenemos el usuario y el token. Como esto es algo feo, vamos a crearnos un custom decorator que nos permita tomar el usuario y otro que nos permita tomar el token.
+
+En la carpeta `auth` nos creamos la carpeta `decorators` y dentro los decoradores `user.decorator.ts`, `token.decorator.ts` y el archivo de barril `index.ts`.
+
+Teniendo creados estos decorators, modificamos `auth.controller.ts`.
+
+En la carpeta `auth` también nos vamos a crear la carpeta `interfaces` para poner tipos a la data que viene de los decoradores. Dentro de esa carpeta nos creamos la interface `current-user.interface.ts`.
+
+**testing**
+
+Probamos el GET para hacer el verify mandando el Bearer Token.
+
 ## Testing
 
 En nuestro proyecto `products-launcher`.
