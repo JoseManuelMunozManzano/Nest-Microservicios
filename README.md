@@ -24,3 +24,5 @@ En la carpeta `documentación` podemos ver un par de archivos PDF. Uno con los s
   - No es un proyecto como tal, sino un README y de nuevo el product-launcher actualizado
 - 09-autenticacion
   - Autenticación basada en JSON Web Token que usaremos para verificar nuestros endpoints
+- 10-Containerization
+  - Vamos a hacer la construcción de imágenes de Docker para producción
