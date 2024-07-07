@@ -83,3 +83,23 @@ Ya podemos borrar el contenedor.
 Ahora nos vamos a las imágenes y lo intentamos levantar de nuevo, pero sin especificar las configuraciones de la primera imagen. Esto falla, indicando que nos falta el PORT, y no se levanta la aplicación.
 
 Lo siguiente que vamos a hacer es un multi-stage build para reducir el tamaño de la imagen.
+
+## Docker - MultiStage Build
+
+Vamos a reducir el tamaño de nuestra imagen final y hacer el proceso de construcción más rápido.
+
+También vamos a añadir una regla de seguridad recomendada por Node, que es evitar usar en la imagen el usuario root.
+
+**client-gateway**
+
+Comenzamos haciendo el multistage build. Para eso modificamos `dockerfile.prod`.
+
+Veremos en el fichero que no hay nada que especifique directamente que ese es mi `client-gateway`. Es decir, este fichero `dockerfile.prod` es el mismo que voy a usar para construir casi todas las aplicaciones de Nest (los submódulos) La diferencia va a aparece en los submódulos que usan Prisma, cuando habrá que generar el cliente de Prisma.
+
+Construimos la imagen con el comando `docker build -f dockerfile.prod -t client-gateway .`
+
+Si me voy a mi Docker Desktop, veo que tengo una imagen creada. Pulso en el icono del pay y configuro lo siguiente:
+
+![alt client-gateway-prod](./images/client-gateway-prod.png)
+
+Más adelante vamos a ver una manera de construir todas las imágenes de manera simultanea y probar que todo esté funcionando también de manera simultanea.
