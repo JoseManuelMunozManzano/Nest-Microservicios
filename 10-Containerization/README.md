@@ -103,3 +103,23 @@ Si me voy a mi Docker Desktop, veo que tengo una imagen creada. Pulso en el icon
 ![alt client-gateway-prod](./images/client-gateway-prod.png)
 
 Más adelante vamos a ver una manera de construir todas las imágenes de manera simultanea y probar que todo esté funcionando también de manera simultanea.
+
+## Docker Compose - Build & Run
+
+Vamos a simplificar la manera como se construyen las imágenes.
+
+Mediante un comando en nuestro `products-launcher` vamos a construir todas las imágenes.
+
+Lo que hay que hacer es crearse otro fichero `docker-compose.yml` muy similar al que ya tenemos, incluso va a quedar más sencillo porque no vamos a tener que exponer ciertos puertos ni comandos (porque las imágenes ya van a estar construidas) ni los volúmenes. Si vamos a tener que indicar que coja el fichero `dockerfile.prod` de forma explícita.
+
+Por tanto, nos copiamos el archivo `docker-compose.yml` y le ponemos el nombre `docker-compose.prod.yml`.
+
+Por ahora solo hacemos la construcción de la imagen de `client-gateway`.
+
+Esto lo hago para mi Raspberry Pi.
+
+Nos vamos a nuestra carpeta de `products-launcher` y ejecutamos: `docker-compose -f docker-compose.prod.yml build` para crear la imagen.
+
+Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos que levanta el `nats-server` y el `client-gateway`.
+
+Si ahora ejecuto en Postman el endpoint GET: `http://192.168.1.41:3000/api/products?page=1&limit=20` veremos que falla pero tiene respuesta. Inclusive ya no es un error de NATS, es un error de que no hay suscriptores al mensaje 'FIND_ALL_PRODUCTS`, cosa que es normal.
