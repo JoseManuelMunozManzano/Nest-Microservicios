@@ -187,6 +187,26 @@ Esto lo hago para mi Raspberry Pi.
 
 Nos vamos a nuestra carpeta de `products-launcher` y ejecutamos: `docker-compose -f docker-compose.prod.yml build` para crear la imagen.
 
-Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos falla al levantar prisma. Esto es porque falta indicar las variables de entorno, en concreto DATABASE_URL, que tenemos que indicar en el momento de construcción.
+Veremos que falla al levantar prisma. Esto es porque falta indicar las variables de entorno, en concreto DATABASE_URL, que tenemos que indicar en el momento de construcción.
 
 ![alt Error](./images/error_01.png)
+
+## Enviar variables en tiempo de construcción
+
+Vimos que tenemos el problema, durante el build (proceso de construcción de la imagen) del fichero `dockerfile.prod` de `orders-ms`, que tenemos que mandar el URL de la BD.
+
+Como no queremos hacer un commit con el URL de la BD, tenemos que proporcionar dicha URL basada en variables de entorno.
+
+En nuestro archivo `.env` de `products-launcher` ya tenemos la variable de entorno `ORDERS_DATABASE_URL`.
+
+En nuestro `docker-compose.prod.yml` de `products-launcher`, en la parte de `orders-ms`, podemos mandar un argumento al proceso de construcción. Esto es lo que hacemos usando `args`.
+
+Y luego, en nuestro archivo `orders-ms/dockerfile.prod` recibimos ese `ARG` en la parte del buid e indicamos también una variable de entorno `ENV`. Con esto, cuando llegue a la parte de la migración de Prisma, tendremos el URL y se podrá ejecutar.
+
+Nos vamos a nuestra carpeta de `products-launcher` y ejecutamos: `docker-compose -f docker-compose.prod.yml build` para crear la imagen.
+
+Indicar que para la parte de MongoDB no hizo falta hacer estas migraciones que hemos hecho porque es más flexible.
+
+Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos que levanta el `nats-server`, el `client-gateway`, el `auth-ms`, `products-ms`, `payments-ms` y `orders-ms`.
+
+Ahora, en Postman, podemos hacer toda la batería de endpoints y todas deberían funcionar.
