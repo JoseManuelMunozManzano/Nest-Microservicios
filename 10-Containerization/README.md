@@ -142,6 +142,7 @@ Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos que l
 Ahora podemos probar la parte de autenticación.
 
 **products-ms**
+
 Nos copiamos de `auth-ms`, el archivo `dockerfile.prod`, al submódulo `products-ms`. Solo hay que modificar para clonar la parte de Prisma desde el paso build al paso prod.
 
 En nuestro archivo `docker-compose.prod.yml` vamos a descomentar la parte de `products-ms` y la dejamos bien para ejecutar la imagen.
@@ -157,6 +158,7 @@ Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos que l
 Ahora podemos probar la parte de products-ms.
 
 **payments-ms**
+
 Nos copiamos de `client-gateway`, el archivo `dockerfile.prod`, al submódulo `payments-ms`.
 
 En nuestro archivo `docker-compose.prod.yml` vamos a descomentar la parte de `payments-ms` y la dejamos bien para ejecutar la imagen.
@@ -170,3 +172,21 @@ Nos vamos a nuestra carpeta de `products-launcher` y ejecutamos: `docker-compose
 Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos que levanta el `nats-server`, el `client-gateway`, el `auth-ms`, `products-ms` y `payments-ms`.
 
 Ahora podemos probar la parte de payments-ms.
+
+## Orders-ms - Postgres en la nube
+
+Aunque la idea es aprovisionar una BD de Postgres en la nube, yo quiero que mi BD Postgres esté en mi Raspberry PI como una imagen independiente de Docker.
+
+**orders-ms**
+
+Nos copiamos de `auth-ms`, el archivo `dockerfile.prod`, al submódulo `orders-ms`. Cambiamos el orden de generación del cliente de Prisma, porque si no falla el testing y el build.
+
+En nuestro archivo `docker-compose.prod.yml` vamos a descomentar la parte de `orders-ms` y la dejamos bien para ejecutar la imagen.
+
+Esto lo hago para mi Raspberry Pi.
+
+Nos vamos a nuestra carpeta de `products-launcher` y ejecutamos: `docker-compose -f docker-compose.prod.yml build` para crear la imagen.
+
+Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos falla al levantar prisma. Esto es porque falta indicar las variables de entorno, en concreto DATABASE_URL, que tenemos que indicar en el momento de construcción.
+
+![alt Error](./images/error_01.png)
