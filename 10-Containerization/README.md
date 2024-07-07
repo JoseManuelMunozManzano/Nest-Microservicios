@@ -123,3 +123,50 @@ Nos vamos a nuestra carpeta de `products-launcher` y ejecutamos: `docker-compose
 Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos que levanta el `nats-server` y el `client-gateway`.
 
 Si ahora ejecuto en Postman el endpoint GET: `http://192.168.1.41:3000/api/products?page=1&limit=20` veremos que falla pero tiene respuesta. Inclusive ya no es un error de NATS, es un error de que no hay suscriptores al mensaje 'FIND_ALL_PRODUCTS`, cosa que es normal.
+
+## Construir todas las imágenes simultaneamente
+
+Vamos a construir todas las imágenes menos una, la que necesita la BD Postgres, porque para que se pueda generar el cliente la BD tiene que existir y tendremos que solventar ese problema, ya que usualmente queremos que la BD esté alojada en otro lugar, que no sea parte del proceso de construcción.
+
+**auth-ms**
+Nos copiamos de `client-gateway`, el archivo `dockerfile.prod`, al submódulo `auth-ms` y lo modificamos un poco para generar el cliente de Prisma.
+
+En nuestro archivo `docker-compose.prod.yml` vamos a descomentar la parte de `auth-ms` y la dejamos bien para ejecutar la imagen.
+
+Esto lo hago para mi Raspberry Pi.
+
+Nos vamos a nuestra carpeta de `products-launcher` y ejecutamos: `docker-compose -f docker-compose.prod.yml build` para crear la imagen.
+
+Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos que levanta el `nats-server`, el `client-gateway` y el `auth-ms`.
+
+Ahora podemos probar la parte de autenticación.
+
+**products-ms**
+Nos copiamos de `auth-ms`, el archivo `dockerfile.prod`, al submódulo `products-ms`. Solo hay que modificar para clonar la parte de Prisma desde el paso build al paso prod.
+
+En nuestro archivo `docker-compose.prod.yml` vamos a descomentar la parte de `products-ms` y la dejamos bien para ejecutar la imagen.
+
+Me ha tocado también instalar los paquetes de node. Para ello, he entrado a la carpeta `products-ms` y ejecutado `npm i`. También he usado `.env.template` para generar mi archivo `.env`. Luego he vuelto a `products-launcher`.
+
+Esto lo hago para mi Raspberry Pi.
+
+Nos vamos a nuestra carpeta de `products-launcher` y ejecutamos: `docker-compose -f docker-compose.prod.yml build` para crear la imagen.
+
+Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos que levanta el `nats-server`, el `client-gateway`, el `auth-ms` y `products-ms`.
+
+Ahora podemos probar la parte de products-ms.
+
+**payments-ms**
+Nos copiamos de `client-gateway`, el archivo `dockerfile.prod`, al submódulo `payments-ms`.
+
+En nuestro archivo `docker-compose.prod.yml` vamos a descomentar la parte de `payments-ms` y la dejamos bien para ejecutar la imagen.
+
+Me ha tocado también instalar los paquetes de node. Para ello, he entrado a la carpeta `payments-ms` y ejecutado `npm i`. También he usado `.env.template` para generar mi archivo `.env`. Luego he vuelto a `products-launcher`.
+
+Esto lo hago para mi Raspberry Pi.
+
+Nos vamos a nuestra carpeta de `products-launcher` y ejecutamos: `docker-compose -f docker-compose.prod.yml build` para crear la imagen.
+
+Si ahora ejecutamos `docker-compose -f docker-compose.prod.yml up` veremos que levanta el `nats-server`, el `client-gateway`, el `auth-ms`, `products-ms` y `payments-ms`.
+
+Ahora podemos probar la parte de payments-ms.
