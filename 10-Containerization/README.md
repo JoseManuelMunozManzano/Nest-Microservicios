@@ -31,3 +31,55 @@ Para ello levantamos Docker, y configuramos las variables de entorno a nivel de 
 ```
 docker compose up --build
 ```
+
+## Docker - Construir a producción
+
+Vamos a construir nuestras imágenes para producción.
+
+Recordar que nuestro proyecto está en Bitbucket, en la ruta `https://bitbucket.org/neimerc/products-launcher/src/main/`.
+
+La idea es irnos a cada submódulo y hacer lo siguiente (por ejemplo, todo lo siguiente lo hago en `client-gateway`):
+
+- Reconstruir los módulos de Node: `npm i`
+- Crear el archivo `.env` a partir del archivo `.env.template`.
+- Creamos el build para producción: `nest build` o `npm run build`
+  - Yo lo hago con el segundo comando
+
+Esto genera la construcción de mi versión de distribución, es decir, la carpeta `dist` dentro de la carpeta de `client-gateway`.
+
+Indicar que dentro de la carpeta `dist`, todo lo que hay es Node, es decir, no hay nada de Nest. De hecho, en la carpeta `client-gateway`, podríamos ejecutar el siguiente comando: `node dist/main.js` y se ejecutaría, en este caso, el microservicio del client-gateway.
+
+Lo que quiero es que este procedimiento que acabo de hacer, también genere una aplicación de Docker que pueda ejecutarse de la siguiente forma: `docker run client-gateway`. Pero la app de Docker tenemos que hacerlo con nuestras versiones de producción.
+
+Nosotros tenemos nuestro archivo `dockerfile` que utilizamos para construir la imagen de Docker, y no está del todo mal. El único inconveniente es que, tal y como está, acaba construyendo imágenes muy grandes, y normalmente cuando trabajamos en producción es mejor hacerlo mediante un multi-stage build, que nos permite construir la imagen de Docker en múltiples etapas para mejorar la velocidad de construcción de las mismas.
+
+Lo que vamos a hacer es crearnos un archivo de `docker-compose.yml`, uno en cada submódulo.
+
+Pero antes de hacerlo, vamos a aprender a hacer manualmente la construcción de producción de nuestra primera imagen, `client-gateway`.
+
+- Hacemos un clon del fichero `dockerfile` y a la copia le ponemos el nombre `dockerfile.prod` y lo modificamos para que genere el build de producción y para que ejecute el main que hay en la carpeta dist.
+- Construimos la imagen con el comando `docker build -f dockerfile.prod -t client-gateway .`
+
+Se construye la imagen usando la arquitectura de nuestra máquina.
+
+Si me voy a mi Docker Desktop, veo que tengo una imagen creada. Pulso en el icono del pay y configuro lo siguiente:
+
+![alt client-gateway-prod](./images/client-gateway-prod.png)
+
+Aunque realmete no hay nada de NATS_SERVERS, si no lo ponemos el contenedor lanzará un error.
+
+Pulsamos Run.
+
+Y así queda corriendo nuestra aplicación.
+
+![alt client-gateway-prod-run](./images/client-gateway-prod-run.png)
+
+Podemos hacer un test en Postman con el siguiente endpoint GET: `http://localhost:3000/api/products?page=1&limit=20`
+
+Aunque falla, vemos que si que llega ahí, puesto que es un error de backend.
+
+Ya podemos borrar el contenedor.
+
+Ahora nos vamos a las imágenes y lo intentamos levantar de nuevo, pero sin especificar las configuraciones de la primera imagen. Esto falla, indicando que nos falta el PORT, y no se levanta la aplicación.
+
+Lo siguiente que vamos a hacer es un multi-stage build para reducir el tamaño de la imagen.
