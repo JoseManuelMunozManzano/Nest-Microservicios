@@ -15,3 +15,7 @@ Puntualmente veremos:
   - Permisos
 
 Es una sección que nos ayudará a comprender procesos de construcción automática simples y con secretos como el URL de la base de datos para aplicar migraciones y generar el cliente de prisma.
+
+**NOTA**
+
+Estos videos sobre Google Cloud no los voy a hacer.
