@@ -26,3 +26,5 @@ En la carpeta `documentación` podemos ver un par de archivos PDF. Uno con los s
   - Autenticación basada en JSON Web Token que usaremos para verificar nuestros endpoints
 - 10-Containerization
   - Vamos a hacer la construcción de imágenes de Docker para producción
+- 11-GoogleCloud-CICD
+  - Vamos a empezar a trabajar con Google Cloud, desde instalaciones hasta construcción automática
