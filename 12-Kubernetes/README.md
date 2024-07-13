@@ -52,3 +52,13 @@ Aunque hay muchos más conceptos, el último que vamos a ver por ahora son los S
 ![alt Secrets](./images/08-Secrets.png)
 
 Con lo que hemos visto, nos falta algo para comunicarnos con el mundo exterior, como BBDD externas por ejemplo, ya que la red virtual está sellada. Esto lo hacemos con otro concepto llamado Ingress, pero esto lo veremos más adelante.
+
+## K8s y Helm - Instalaciones
+
+Tenemos que hacer dos configuraciones en nuestro equipo para poder trabajar con Kubernetes.
+
+Helm es un package manager para Kubernetes: `https://helm.sh/`. Lo vamos a usar para crear el proyecto y para hacer actualizaciones. Yo lo instalo en Mac usando el comando `brew install helm` y en la Raspberry Pi usando `https://snapcraft.io/install/helm/raspbian`.
+
+También deberíamos tener instalado `kubectl` por el hecho de tener instalado Docker Desktop. Si no aparece, se puede seguir esta ayuda: `https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/`.
+
+Ver también: `https://minikube.sigs.k8s.io/docs/`.
