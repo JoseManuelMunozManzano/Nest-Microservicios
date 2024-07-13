@@ -62,3 +62,31 @@ Helm es un package manager para Kubernetes: `https://helm.sh/`. Lo vamos a usar 
 También deberíamos tener instalado `kubectl` por el hecho de tener instalado Docker Desktop. Si no aparece, se puede seguir esta ayuda: `https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/`.
 
 Ver también: `https://minikube.sigs.k8s.io/docs/`.
+
+## Configuración de proyecto
+
+Ver esta guía:
+
+[Helm Commands](./Helm.md)
+
+Como siempre, estamos tirando de este repositorio de Bitbucket, que lo uso para practicar con el: `https://bitbucket.org/neimerc/products-launcher/src/main/`
+
+Lo descargamos y lo pasamos a VSCode. Seguimos el fichero README.md
+
+Me creo un nuevo fichero `k8s` a nivel raiz, aunque podría estar en cualquier sitio de mi ordenador.
+
+También me creo el archivo `k8s.README.md` a nivel raiz, con la info de comandos para trabajar con Helm.
+
+Nos vamos a la carpeta `k8s` y ahí ejecutamos el comando: `helm create tienda`. Esto nos crea el proyecto de Kubernetes.
+
+Accedemos a la carpeta `tienda`.
+
+El archivo values.yaml tiene muchísimas configuraciones. Vamos a borrar su contenido.
+
+Vamos a pasar casi todo el tiempo en la carpeta `templates` donde están las configuraciones de nuestros pods, deployments. Vemos que hay bastantes archivos de ejemplos de services, de ingress, de hpa... Vamos a borrar todo su contenido para empezar de cero.
+
+Ejecutamos el comando `helm upgrade tienda .`. Como no tenemos nada configurado va a fallar. Es correcto.
+
+NOTA: Cada vez que hagamos un archivo y queramos aplicar los cambios ejecutaremos el comando `helm upgrade tienda .`.
+
+Vamos a comenzar a crear nuestros deployments, uno por uno. Comenzaremos por `client-gateway` que necesita una comunicación con el mundo exterior, y eso nos va a servir para que tengamos ese puerto de comunicación y a ir levantando los otros microservicios.
