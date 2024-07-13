@@ -81,7 +81,7 @@ Nos vamos a la carpeta `k8s` y ahí ejecutamos el comando: `helm create tienda`.
 
 Accedemos a la carpeta `tienda`.
 
-El archivo values.yaml tiene muchísimas configuraciones. Vamos a borrar su contenido.
+El archivo `values.yaml` tiene muchísimas configuraciones. Vamos a borrar su contenido.
 
 Vamos a pasar casi todo el tiempo en la carpeta `templates` donde están las configuraciones de nuestros pods, deployments. Vemos que hay bastantes archivos de ejemplos de services, de ingress, de hpa... Vamos a borrar todo su contenido para empezar de cero.
 
@@ -90,3 +90,38 @@ Ejecutamos el comando `helm upgrade tienda .`. Como no tenemos nada configurado 
 NOTA: Cada vez que hagamos un archivo y queramos aplicar los cambios ejecutaremos el comando `helm upgrade tienda .`.
 
 Vamos a comenzar a crear nuestros deployments, uno por uno. Comenzaremos por `client-gateway` que necesita una comunicación con el mundo exterior, y eso nos va a servir para que tengamos ese puerto de comunicación y a ir levantando los otros microservicios.
+
+## Crear deployment
+
+Para crear un deployment hay que configurar qué imagen es la que queremos correr, que archivo output con extensión .yml vamos a usar, el nombre del deployment..
+
+En definitiva, en la carpeta `tienda` se usa el comando:
+
+`kubectl create deployment client-gateway --image=client-gateway-prod --dry-run=client -o yaml > deployment.yml`
+
+Esto lo que hace es crear el archivo `deployment.yml`, solo eso. Dentro de la carpeta `templates` creamos la carpeta `client-gateway` y movemos `deployment.yml` ahí.
+
+Volvemos a la carpeta `tienda` y ejecutamos `helm upgrade tienda .` Dará el error `Error: UPGRADE FAILED: "tienda" has no deployed releases`.
+
+Para solucionar este error, tenemos que ejecutar (solo lo vamos a tener que hacer una vez) para aplicar la configuración inicial: `helm install tienda .`
+
+Ahora si podemos ejecutar: `helm upgrade tienda .`
+
+Este comando lo vamos a tener que ejecutar cada vez que hagamos algún cambio.
+
+Para obtener información de los pods, si todo funciona... ejecutar: `kubectl get pods`. Como vemos que READY indica 0/1, significa que de 1 posible réplica tenemos 0, es decir, no hay nada corriendo. Cogemos el Name que nos indica ese comando.
+
+Para revisar los logs y ver qué ocurre, tenemos dos posibilidades:
+
+- Este comando indica información propia de ese pod, pero no los logs propiamente de la ejecución.
+  - `kubectl describe pods client-gateway-6f454c6c9c-lrgx6`
+- Los logs propiamente de la ejecución (si se puede descargar la imagen, sino no indica nada) se obtienen con el siguiente comando
+  - `kubectl logs client-gateway-6f454c6c9c-lrgx6`
+
+El error que da es este:
+
+```
+Failed to pull image "client-gateway-prod": Error response from daemon: pull access denied for client-gateway-prod, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+```
+
+Tenemos que autenticarnos internamente dentro de Kubernetes para que pueda conectarse a nuestro registro privado.
